@@ -7,7 +7,7 @@
 package com.udeecuda.DAO;
 
 //Data Access Object
-// Access bewtween low level operations and high level operations
+//Access bewtween low level operations and high level operations
 
 /**
  * 
