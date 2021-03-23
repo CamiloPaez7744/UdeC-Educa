@@ -22,7 +22,7 @@ import javax.validation.constraints.Size;
 
 /**
  * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author UdeC-Educa Dev's Team
  */
 @Entity
 @Table(name = "user_data")

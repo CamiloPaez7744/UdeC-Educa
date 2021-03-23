@@ -11,7 +11,7 @@ package com.udeecuda.DAO;
 
 /**
  * 
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author UdeC-Educa Dev's Team
  */
 public class UserDAO {
 
