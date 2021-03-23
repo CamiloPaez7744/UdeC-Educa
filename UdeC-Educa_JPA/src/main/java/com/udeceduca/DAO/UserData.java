@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package com.udeecuda.DAO;
+package com.udeceduca.DAO;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
