@@ -28,6 +28,7 @@ public class UserDAO {
         generateUsername.setParameter("id", id);
         generateUsername.execute();
         String username = (String) generateUsername.getOutputParameterValue("theUsername");
+        System.out.println(username);
         return username;
     }
 
