@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author UdeC-Educa Dev's Team
  */
-@WebServlet(name = "AlumnoController", urlPatterns = {"/Alumn0C0ntr0ller"})
+@WebServlet(name = "UserController", urlPatterns = {"/UserC0ntr0llerUEC"})
 public class UserController extends HttpServlet {
 
     /**
@@ -34,15 +34,7 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet AlumnoController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet AlumnoController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            
         }
     }
 
