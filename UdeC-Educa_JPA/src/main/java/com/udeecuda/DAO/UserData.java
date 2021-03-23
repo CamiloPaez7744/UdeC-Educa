@@ -16,6 +16,9 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,6 +29,16 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "user_data")
+
+@NamedStoredProcedureQuery(
+    name = "sp_updateuser",
+    procedureName = "sp_updateuser",
+    parameters = {
+        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
+        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "theUsername")
+    }
+)
+
 @NamedQueries({
     @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u"),
     @NamedQuery(name = "UserData.findByIdUser", query = "SELECT u FROM UserData u WHERE u.idUser = :idUser"),
