@@ -35,15 +35,6 @@ $$ LANGUAGE plpgsql
 
 --Store Procedure for encrypt password
 
-
-CREATE FUNCTION fn_encryptPassword(pass VARCHAR(30), )
-RETURNS VARCHAR(72) AS $$
-DECLARE AES_KEY VARCHAR(72) = gen_salt('bf');
-BEGIN
-RETURN AES_KEY;
-END;
-$$ LANGUAGE plpgsql
-
 --CALL sp_encryptPass('contraseña','2127503716')
 
 CREATE PROCEDURE sp_encryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30))
@@ -60,30 +51,22 @@ $$ LANGUAGE plpgsql
 --Store Procedure for decrypt password
 
 
-select enc_pass, hash_pass, pgp_sym_decrypt(enc_pass, hash_pass) FROM user_data where identification = '2127503716';
+--select enc_pass, hash_pass, pgp_sym_decrypt(enc_pass, hash_pass) FROM user_data where identification = '2127503716';
 
-CREATE FUNCTION fn_dencryptPass(id varchar(10))
+CREATE FUNCTION fn_decryptPass(id varchar(10))
 RETURNS VARCHAR(30) AS $$
-DECLARE res VARCHAR (30);
-DECLARE enc_passField BYTEA;
-DECLARE hash_passField VARCHAR(72);
+DECLARE res VARCHAR(30);
 BEGIN
-select enc_pass INTO enc_passField FROM user_data where identification = id;
-select hash_pass INTO hash_passField FROM user_data where identification = id;
-RETURN res = pgp_sym_decrypt(enc_passField, hash_passField); 
+select pgp_sym_decrypt(enc_pass, hash_pass) into res FROM user_data where identification = id;
+RETURN res;
 END;
 $$ LANGUAGE plpgsql
 
-
-CREATE PROCEDURE sp_decryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30))
+CREATE PROCEDURE sp_decryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30), INOUT res boolean)
 AS $$
-DECLARE twins BOOLEAN;
 BEGIN
-IF (user_password = fn_decryptPass(id))
-SELECT twins := 'TRUE';
-ELSE 
-SELEC twins := 'FALSE';
-END IF;
-END;
-RETURN twins;
+SELECT (user_password = fn_decryptPass(id) into res);
+END
 $$ LANGUAGE plpgsql
+
+--CALL sp_decryptPassword('8413840228', 'contraseña');
