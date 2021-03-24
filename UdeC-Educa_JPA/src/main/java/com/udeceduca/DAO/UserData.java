@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.udeceduca.DAO;
 
 import java.io.Serializable;
@@ -16,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
@@ -24,21 +24,40 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * 
+ *
  * @author UdeC-Educa Dev's Team
  */
 @Entity
 @Table(name = "user_data")
 
-@NamedStoredProcedureQuery(
-    name = "sp_updateuser",
-    procedureName = "sp_updateuser",
-    parameters = {
-        @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
-        @StoredProcedureParameter(mode = ParameterMode.OUT, type = String.class, name = "theUsername")
-    }
-)
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(
+        name = "sp_updateuser",
+        procedureName = "sp_updateuser",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id")
+        }
+    ),
 
+    @NamedStoredProcedureQuery(
+        name = "sp_encryptPassword",
+        procedureName = "sp_encryptPassword",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_password")
+        }
+    ),
+        
+    @NamedStoredProcedureQuery(
+        name = " ",
+        procedureName = "sp_decryptPassword",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_password"),
+            @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "res")
+        }
+    )    
+})
 @NamedQueries({
     @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u"),
     @NamedQuery(name = "UserData.findByIdUser", query = "SELECT u FROM UserData u WHERE u.idUser = :idUser"),
