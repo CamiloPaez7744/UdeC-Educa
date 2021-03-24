@@ -5,6 +5,8 @@
  */
 package com.udeceduca.controllers;
 
+import com.udeceduca.DAO.UserDAO;
+
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -17,10 +19,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author UdeC-Educa Dev's Team
  */
-@WebServlet(name = "UserController", urlPatterns = {"/UserC0ntr0llerUEC"})
-public class UserController extends HttpServlet {
+@WebServlet(name = "DataController", urlPatterns = {"/DataC0ntr0llerSDF"})
+public class DataController extends HttpServlet {
 
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,8 +36,15 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
-            
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet DataController</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet DataController at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -67,6 +75,12 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
+        UserDAO userMeth = new UserDAO();
+        boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
+        if (validate){
+            response.sendRedirect("NextPage");
+        }
     }
 
     /**
