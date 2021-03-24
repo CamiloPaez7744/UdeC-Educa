@@ -5,6 +5,7 @@
  */
 package com.udeceduca.controllers;
 
+import com.udeceduca.DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -35,7 +36,15 @@ public class UserController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            
+             UserDAO userMeth = new UserDAO();
+        boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
+        if (validate) {
+            response.sendRedirect("Access.jsp");
+        } else {
+
+            request.setAttribute("errorMessage", "Datos incorrectos");
+            request.getRequestDispatcher("Index.jsp").forward(request, response);
+        }    
             
         }
     }
