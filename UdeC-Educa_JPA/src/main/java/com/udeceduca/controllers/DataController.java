@@ -6,7 +6,6 @@
 package com.udeceduca.controllers;
 
 import com.udeceduca.DAO.UserDAO;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author UdeC-Educa Dev's Team
  */
-@WebServlet(name = "DataController", urlPatterns = {"/DataC0ntr0llerSDF"})
+@WebServlet(name = "dataController", urlPatterns = {"/dataController"})
 public class DataController extends HttpServlet {
 
     /**
@@ -39,10 +38,10 @@ public class DataController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet DataController</title>");            
+            out.println("<title>Servlet dataController</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet DataController at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Servlet dataController at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
@@ -75,12 +74,15 @@ public class DataController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-        
-        UserDAO userMeth = new UserDAO();
+         UserDAO userMeth = new UserDAO();
         boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
-        if (validate){
-            response.sendRedirect("NextPage");
-        }
+        if (validate) {
+            response.sendRedirect("Access.jsp");
+        } else {
+
+            request.setAttribute("errorMessage", "Datos incorrectos");
+            request.getRequestDispatcher("Index.jsp").forward(request, response);
+        }  
     }
 
     /**
