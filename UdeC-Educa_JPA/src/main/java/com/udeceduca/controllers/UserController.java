@@ -8,6 +8,7 @@ package com.udeceduca.controllers;
 import com.udeceduca.DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author UdeC-Educa Dev's Team
  */
-@WebServlet(name = "UserController", urlPatterns = {"/UserC0ntr0llerUEC"})
+@WebServlet(name = "UserController", urlPatterns = {"/UserController"})
 public class UserController extends HttpServlet {
 
     
@@ -34,18 +35,27 @@ public class UserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-             UserDAO userMeth = new UserDAO();
-        boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
-        if (validate) {
-            response.sendRedirect("Access.jsp");
-        } else {
+         try (PrintWriter out = response.getWriter()) {
+            //Se obtienen los parametros desde el form
+            String user = request.getParameter("user");
+            String password = request.getParameter("password");
 
-            request.setAttribute("errorMessage", "Datos incorrectos");
-            request.getRequestDispatcher("Index.jsp").forward(request, response);
-        }    
+            //La respuesta del captcha
             
+            String captcha = request.getParameter("g-recaptcha-response");
+
+            boolean validate = ValidateProcess.verificar(captcha);
+
+            String usuario = getServletConfig().getInitParameter(user);
+            String contrasenia = getServletConfig().getInitParameter(password);
+            RequestDispatcher rd = getServletContext().getRequestDispatcher("/recaptcha.jsp");
+            if ((user == usuario) && (contrasenia == password) && validate) {
+                response.sendRedirect("correcto.jsp");
+            } else {
+                response.sendRedirect("error.jsp");
+            }
+            
+            System.out.println(user + password);
         }
     }
 
@@ -76,6 +86,7 @@ public class UserController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+       
     }
 
     /**
