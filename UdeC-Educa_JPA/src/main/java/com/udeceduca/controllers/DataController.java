@@ -34,16 +34,15 @@ public class DataController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet dataController</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet dataController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            UserDAO userMeth = new UserDAO();
+            boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
+            if (validate) {
+                response.sendRedirect("Access.jsp");
+            } else {
+
+                request.setAttribute("errorMessage", "Datos incorrectos");
+                request.getRequestDispatcher("Index.jsp").forward(request, response);
+            }
         }
     }
 
@@ -74,15 +73,7 @@ public class DataController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-         UserDAO userMeth = new UserDAO();
-        boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
-        if (validate) {
-            response.sendRedirect("Access.jsp");
-        } else {
 
-            request.setAttribute("errorMessage", "Datos incorrectos");
-            request.getRequestDispatcher("Index.jsp").forward(request, response);
-        }  
     }
 
     /**

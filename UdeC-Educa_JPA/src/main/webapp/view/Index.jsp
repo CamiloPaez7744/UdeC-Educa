@@ -1,3 +1,12 @@
+<%-- 
+    Document   : Index
+    Created on : 24/03/2021, 1:30:23 a. m.
+    Author     : UdeC-Educa Dev's Team
+--%>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" import="com.udeceduca.controllers.DataController"%>
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,27 +16,27 @@
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
     ></script>
-    
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="shortcut icon" href="public/images/udec-educa-icon.png" />
+    <link rel="shortcut icon" href="../public/images/udec-educa-icon.png" />
+    <link rel="stylesheet" href="../css/style.css" />
     <title>UdeC-Educa</title>
   </head>
   <body>
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-          <form action="#" class="sign-in-form">
+            <form action="DataController" method="POST" class="sign-in-form">
             <h2 class="title">Ingreso</h2>
+            <p><font color="red">${errorMessage}</font></p>	
             <div class="input-field-log">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Usuario" required/>
+              <input type="text" placeholder="Usuario" name="username" required/>
             </div>
             <div class="input-field-log">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Contraseña" required/>
+              <input type="password" placeholder="Contrase�a" name="password" required/>
             </div>
             <input type="submit" value="Ingresar" class="btn solid" />
-            <p class="social-text">O ingresa con</p>
+            <!-- <p class="social-text">O ingresa con</p>
             <div class="social-media">
               <a href="#" class="social-icon">
                 <i class="fab fa-facebook-f"></i>
@@ -35,7 +44,7 @@
               <a href="#" class="social-icon">
                 <i class="fab fa-google"></i>
               </a>
-             </div>
+             </div> -->
           </form>
           <form action="#" class="sign-up-form">
             <h2 class="title">Registrate</h2>
@@ -57,7 +66,11 @@
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Identificación" required/>
+              <input type="text" placeholder="Identificaci�n" required/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Fecha nacimiento" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
@@ -65,11 +78,11 @@
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Contraseña" required/>
+              <input type="password" placeholder="Contrase�a" required/>
             </div>
             <input type="submit" class="btn" value="Registrarse" />
-            <!-- <p class="social-text">O Registrate con</p> -->
-            <!-- <div class="social-media">
+            <!-- <p class="social-text">O Registrate con</p>
+            <div class="social-media">
               <a href="#" class="social-icon">
                 <i class="fab fa-facebook-f"></i>
               </a>
@@ -84,32 +97,33 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
-            <h3>¿Eres nuevo?</h3>
+            <h3>�Eres nuevo?</h3>
             <p>
-              registrate y disfruta de esta aplicación
+              registrate y disfruta de esta aplicaci�n
             </p>
             <button class="btn transparent" id="sign-up-btn">
               Registrate
             </button>
           </div>
-          <img src="img/logg.svg" class="image" alt="" />
+          <img src="../img/logg.svg" class="image" alt="" />
         </div>
         <div class="panel right-panel">
           <div class="content">
-            <h3¡Ya tienes cuenta!</h3>
+            <h3�Ya tienes cuenta!</h3>
             <p>
-              ¿Qué esperas? Ingresa ahora y disfruta de nuestra plataforma.
+              �Qu� esperas? Ingresa ahora y disfruta de nuestra plataforma.
             </p>
             <button class="btn transparent" id="sign-in-btn">
               Ingresar
             </button>
           </div>
-          <img src="img/reg.svg" class="image" alt="" />
+          <img src="../img/reg.svg" class="image" alt="" />
         </div>
       </div>
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="../js/app.js"></script>
   </body>
 </html>
+
 
