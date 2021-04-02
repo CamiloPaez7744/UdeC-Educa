@@ -18,7 +18,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
+import static javax.persistence.ParameterMode.IN;
+import static javax.persistence.ParameterMode.INOUT;
 import javax.persistence.StoredProcedureParameter;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -49,12 +52,12 @@ import javax.validation.constraints.Size;
     ),
         
     @NamedStoredProcedureQuery(
-        name = " ",
+        name = "sp_decryptPassword",
         procedureName = "sp_decryptPassword",
         parameters = {
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_password"),
-            @StoredProcedureParameter(mode = ParameterMode.INOUT, type = String.class, name = "res")
+            @StoredProcedureParameter(mode = ParameterMode.INOUT, type = boolean.class, name = "res")
         }
     )    
 })
@@ -107,9 +110,6 @@ public class UserData implements Serializable {
     @Size(max = 80)
     @Column(name = "username")
     private String username;
-    @Lob
-    @Column(name = "compress_pass")
-    private byte[] compressPass;
     @Size(max = 128)
     @Column(name = "hash_pass")
     private String hashPass;
@@ -194,14 +194,6 @@ public class UserData implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public byte[] getCompressPass() {
-        return compressPass;
-    }
-
-    public void setCompressPass(byte[] compressPass) {
-        this.compressPass = compressPass;
     }
 
     public String getHashPass() {

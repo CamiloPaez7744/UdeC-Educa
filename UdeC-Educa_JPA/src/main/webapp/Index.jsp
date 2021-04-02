@@ -1,4 +1,4 @@
-<%-- 
+    <%-- 
     Document   : Index
     Created on : 24/03/2021, 1:30:23 a. m.
     Author     : UdeC-Educa Dev's Team
@@ -16,8 +16,8 @@
       src="https://kit.fontawesome.com/64d58efce2.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="shortcut icon" href="../public/images/udec-educa-icon.png" />
-    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="shortcut icon" href="public/images/udec-educa-icon.png" />
+    <link rel="stylesheet" href="css/style.css" />
     <title>UdeC-Educa</title>
   </head>
   <body>
@@ -46,39 +46,39 @@
               </a>
              </div> -->
           </form>
-          <form action="#" class="sign-up-form">
+          <form action="RegistroController" method="POST" class="sign-up-form">
             <h2 class="title">Registrate</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Primer Nombre" required/>
+              <input type="text" placeholder="Primer Nombre" name="firsName" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Segundo Nombre" />
+              <input type="text" placeholder="Segundo Nombre" name="secondName"/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Primer Apellido" required/>
+              <input type="text" placeholder="Primer Apellido" name="firstLast" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Segundo Apellido" />
+              <input type="text" placeholder="Segundo Apellido" name="secondLast"/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Identificaciï¿½n" required/>
+              <input type="text" placeholder="Identificación" name="identification" required/>
             </div>
-            <div class="input-field">
+            <!-- <div class="input-field">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Fecha nacimiento" required/>
-            </div>
+            </div> -->
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="text" placeholder="correo" required />
+              <input type="text" placeholder="correo" name="email" required />
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Contraseï¿½a" required/>
+              <input type="password" placeholder="Contraseña" name="password" required/>
             </div>
             <input type="submit" class="btn" value="Registrarse" />
             <!-- <p class="social-text">O Registrate con</p>
@@ -97,9 +97,9 @@
       <div class="panels-container">
         <div class="panel left-panel">
           <div class="content">
-            <h3>ï¿½Eres nuevo?</h3>
+            <h3>¿Eres nuevo?</h3>
             <p>
-              registrate y disfruta de esta aplicaciï¿½n
+              Registrate y disfruta de esta aplicación
             </p>
             <button class="btn transparent" id="sign-up-btn">
               Registrate
@@ -117,12 +117,12 @@
               Ingresar
             </button>
           </div>
-          <img src="../img/reg.svg" class="image" alt="" />
+          <img src="img/reg.svg" class="image" alt="" />
         </div>
       </div>
     </div>
 
-    <script src="../js/app.js"></script>
+    <script src="js/app.js"></script>
   </body>
 </html>
 
