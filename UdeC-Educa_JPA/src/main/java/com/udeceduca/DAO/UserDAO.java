@@ -20,7 +20,7 @@ import javax.persistence.StoredProcedureQuery;
  *
  * @author UdeC-Educa Dev's Team
  */
-public class UserDAO implements DAO{
+public class UserDAO implements DAO {
 
     static UserData user = new UserData();
 
@@ -48,23 +48,22 @@ public class UserDAO implements DAO{
         decryptPassword.setParameter("user_password", password);
         decryptPassword.setParameter("res", false);
         decryptPassword.execute();
-        
+
         long var = (long) decryptPassword.getOutputParameterValue("res");
-        if (var == 1){
+        if (var == 1) {
             validate = true;
         }
         System.out.println(var);
-        
-       // boolean validate = (boolean) decryptPassword.getOutputParameterValue("res");
-       
+
+        // boolean validate = (boolean) decryptPassword.getOutputParameterValue("res");
         return validate;
     }
-    
+
     public boolean queryFindUser(String username, String password) {
         boolean confirmUser = false;
         Query findUser = UserDAO.em.createNamedQuery("UserData.findByUsername");
         findUser.setParameter("username", username);
-        try{
+        try {
             user = (UserData) findUser.getSingleResult();
             if (user != null) {
                 confirmUser = sp_DecryptPassword(user.getIdentification(), password);
@@ -72,12 +71,46 @@ public class UserDAO implements DAO{
             } else {
                 confirmUser = false;
             }
-            
-        }catch (Exception e){
+
+        } catch (Exception e) {
             e.printStackTrace();
             confirmUser = false;
         }
         return confirmUser;
+    }
+
+    public boolean uniqueUser(String identification) {
+        boolean unique = false;
+        Query findByIdentification = UserDAO.em.createNamedQuery("UserData.findByIdentification");
+        findByIdentification.setParameter("identification", identification);
+        try{
+            user = (UserData) findByIdentification.getSingleResult();
+            if (user != null) {
+                return unique = true;
+            } else {
+                return unique = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            unique = false;
+        }
+        return unique;
+    }
+
+    public void insertData(String identification, String first_name, String second_name, String first_lastname, String second_lastname, String email) {
+       byte arr[] = new byte[] {1};
+        user.setIdentification(identification);
+        user.setFirstName(first_name);
+        user.setSecondName(second_name);
+        user.setFirstLastname(first_lastname);
+        user.setSecondLastname(second_lastname);
+        user.setEmail(email);
+        user.setUsername("");
+        user.setHashPass("");
+        user.setEncPass(arr);
+        et = em.getTransaction();
+        et.begin();
+        em.persist(user);
     }
 
     @Override
