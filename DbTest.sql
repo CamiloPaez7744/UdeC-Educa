@@ -14,8 +14,7 @@ CREATE TABLE user_data(
 
 CREATE DATABASE udeceduca_test;
 CREATE TABLE user_data(
-    id_user BIGINT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    identification VARCHAR(10) NOT NULL,
+    identification VARCHAR(10) PRIMARY KEY NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     second_name VARCHAR(30),
     first_lastname VARCHAR(30) NOT NULL,
@@ -42,7 +41,7 @@ CREATE FUNCTION fn_userGenerator(id varchar(10))
 RETURNS VARCHAR(80)
 BEGIN
 DECLARE user_var VARCHAR(80);
-SELECT lOWER(CONCAT(SUBSTRING(LTRIM(RTRIM(first_name)),1,1), LTRIM(RTRIM(first_lastname)),SUBSTRING(identification, CHAR_LENGTH(identification)-1,2))) INTO user_var  FROM user_data WHERE identification = id lIMIT 1;
+SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(lOWER(CONCAT(SUBSTRING(LTRIM(RTRIM(first_name)),1,1), LTRIM(RTRIM(first_lastname)),SUBSTRING(identification, CHAR_LENGTH(identification)-1,2))),'á','a'),'é','e'),'í','i'),'ó','o'),'ú','u') INTO user_var  FROM user_data WHERE identification = id lIMIT 1;
 RETURN user_var;
 END;
 //
@@ -76,12 +75,19 @@ WHERE identification = id;
 END;
 $$ LANGUAGE plpgsql
 
+UPDATE usuario SET 
+compress_pass = COMPRESS(REPEAT('abc~ABC', 100) ),
+hash_pass = SHA2('contrasena', 512),
+enc_pass = AES_ENCRYPT('contrasena', keys)
+WHERE identificacion = id;
+RETURN comped;
+END;
 --mysql encriptar contraseña
 DELIMITER //
 CREATE OR REPLACE PROCEDURE sp_encryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30))
 BEGIN
 UPDATE user_data SET 
-    hash_pass = SUBSTRING(MD5(RAND()), -10),
+    hash_pass = SHA2(user_password, 512),
 	enc_pass = AES_ENCRYPT(user_password, hash_pass)    
 WHERE identification = id;
 END;

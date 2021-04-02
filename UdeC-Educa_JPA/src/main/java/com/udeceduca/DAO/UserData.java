@@ -9,8 +9,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.NamedQueries;
@@ -18,21 +16,19 @@ import javax.persistence.NamedQuery;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.ParameterMode;
-import static javax.persistence.ParameterMode.IN;
-import static javax.persistence.ParameterMode.INOUT;
 import javax.persistence.StoredProcedureParameter;
-import javax.persistence.StoredProcedureQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author UdeC-Educa Dev's Team
+ * @author kmilo
  */
 @Entity
 @Table(name = "user_data")
-
+@XmlRootElement
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(
         name = "sp_updateuser",
@@ -63,7 +59,6 @@ import javax.validation.constraints.Size;
 })
 @NamedQueries({
     @NamedQuery(name = "UserData.findAll", query = "SELECT u FROM UserData u"),
-    @NamedQuery(name = "UserData.findByIdUser", query = "SELECT u FROM UserData u WHERE u.idUser = :idUser"),
     @NamedQuery(name = "UserData.findByIdentification", query = "SELECT u FROM UserData u WHERE u.identification = :identification"),
     @NamedQuery(name = "UserData.findByFirstName", query = "SELECT u FROM UserData u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "UserData.findBySecondName", query = "SELECT u FROM UserData u WHERE u.secondName = :secondName"),
@@ -76,10 +71,6 @@ public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_user")
-    private Long idUser;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 10)
@@ -120,24 +111,15 @@ public class UserData implements Serializable {
     public UserData() {
     }
 
-    public UserData(Long idUser) {
-        this.idUser = idUser;
+    public UserData(String identification) {
+        this.identification = identification;
     }
 
-    public UserData(Long idUser, String identification, String firstName, String firstLastname, String email) {
-        this.idUser = idUser;
+    public UserData(String identification, String firstName, String firstLastname, String email) {
         this.identification = identification;
         this.firstName = firstName;
         this.firstLastname = firstLastname;
         this.email = email;
-    }
-
-    public Long getIdUser() {
-        return idUser;
-    }
-
-    public void setIdUser(Long idUser) {
-        this.idUser = idUser;
     }
 
     public String getIdentification() {
@@ -215,7 +197,7 @@ public class UserData implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUser != null ? idUser.hashCode() : 0);
+        hash += (identification != null ? identification.hashCode() : 0);
         return hash;
     }
 
@@ -226,7 +208,7 @@ public class UserData implements Serializable {
             return false;
         }
         UserData other = (UserData) object;
-        if ((this.idUser == null && other.idUser != null) || (this.idUser != null && !this.idUser.equals(other.idUser))) {
+        if ((this.identification == null && other.identification != null) || (this.identification != null && !this.identification.equals(other.identification))) {
             return false;
         }
         return true;
@@ -234,7 +216,7 @@ public class UserData implements Serializable {
 
     @Override
     public String toString() {
-        return "com.udeecuda.DAO.UserData[ idUser=" + idUser + " ]";
+        return "com.udeceduca.DAO.UserData[ identification=" + identification + " ]";
     }
-
+    
 }

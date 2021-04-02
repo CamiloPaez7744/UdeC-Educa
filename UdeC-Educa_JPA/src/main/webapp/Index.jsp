@@ -46,8 +46,9 @@
               </a>
              </div> -->
           </form>
-          <form action="RegistroController" method="POST" class="sign-up-form">
+          <form action="UserController" method="POST" class="sign-up-form">
             <h2 class="title">Registrate</h2>
+            <p><font color="red">${errorMessageRegister}</font></p>
             <div class="input-field">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Primer Nombre" name="firsName" required/>

@@ -35,27 +35,28 @@ public class UserController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        UserDAO ud = new UserDAO();
          try (PrintWriter out = response.getWriter()) {
             //Se obtienen los parametros desde el form
-            String user = request.getParameter("user");
+            String firstName = request.getParameter("firstName");
+            String secondName = request.getParameter("secondName");
+            String firstLast = request.getParameter("firstLast");
+            String secondLast = request.getParameter("secondLast");
+            String identification = request.getParameter("identification");
+            String email = request.getParameter("email");
             String password = request.getParameter("password");
-
-            //La respuesta del captcha
             
-            String captcha = request.getParameter("g-recaptcha-response");
-
-            boolean validate = ValidateProcess.verificar(captcha);
-
-            String usuario = getServletConfig().getInitParameter(user);
-            String contrasenia = getServletConfig().getInitParameter(password);
-            RequestDispatcher rd = getServletContext().getRequestDispatcher("/recaptcha.jsp");
-            if ((user == usuario) && (contrasenia == password) && validate) {
-                response.sendRedirect("correcto.jsp");
-            } else {
-                response.sendRedirect("error.jsp");
+            boolean val = ud.uniqueUser(identification);
+            if (val){
+                request.setAttribute("errorMessageRegister", "Usuario existente con esa identificacion");
+                request.getRequestDispatcher("Index.jsp").forward(request, response);
+            }else{
+                ud.insertData(identification, firstName, secondName, firstLast, secondLast, email);
+                ud.sp_UpdateUser(identification);
+                ud.sp_EncryptPassword(identification, password);
+                response.sendRedirect("index.jsp");
+                
             }
-            
-            System.out.println(user + password);
         }
     }
 
