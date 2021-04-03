@@ -24,12 +24,12 @@ public class UserDAO implements DAO {
 
     static UserData user = new UserData();
 
-    static EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.udeceduca_UdeC-Educa_JPA_war_1.0-SNAPSHOTPU");
-    static EntityManager em = emf.createEntityManager();
-    static EntityTransaction et = em.getTransaction();
+    EntityManagerFactory emf = Persistence.createEntityManagerFactory("com.udeceduca_UdeC-Educa_JPA_war_1.0-SNAPSHOTPU");
+    EntityManager em = emf.createEntityManager();
+    EntityTransaction et = em.getTransaction();
 
     public void sp_UpdateUser(String id) {
-        StoredProcedureQuery generateUsername = this.em.createNamedStoredProcedureQuery("sp_updateuser");
+        StoredProcedureQuery generateUsername = this.em.createNamedStoredProcedureQuery("sp_updateUser");
         generateUsername.setParameter("id", id);
         generateUsername.execute();
     }
@@ -61,7 +61,7 @@ public class UserDAO implements DAO {
 
     public boolean queryFindUser(String username, String password) {
         boolean confirmUser = false;
-        Query findUser = UserDAO.em.createNamedQuery("UserData.findByUsername");
+        Query findUser = this.em.createNamedQuery("UserData.findByUsername");
         findUser.setParameter("username", username);
         try {
             user = (UserData) findUser.getSingleResult();
@@ -81,7 +81,7 @@ public class UserDAO implements DAO {
 
     public boolean uniqueUser(String identification) {
         boolean unique = false;
-        Query findByIdentification = UserDAO.em.createNamedQuery("UserData.findByIdentification");
+        Query findByIdentification = this.em.createNamedQuery("UserData.findByIdentification");
         findByIdentification.setParameter("identification", identification);
         try{
             user = (UserData) findByIdentification.getSingleResult();
@@ -111,6 +111,7 @@ public class UserDAO implements DAO {
         et = em.getTransaction();
         et.begin();
         em.persist(user);
+        et.commit();
     }
 
     @Override

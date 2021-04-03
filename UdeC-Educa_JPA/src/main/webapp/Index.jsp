@@ -18,6 +18,7 @@
     ></script>
     <link rel="shortcut icon" href="public/images/udec-educa-icon.png" />
     <link rel="stylesheet" href="css/style.css" />
+    <script async src="https://www.google.com/recaptcha/api.js"></script>
     <title>UdeC-Educa</title>
   </head>
   <body>
@@ -26,15 +27,18 @@
         <div class="signin-signup">
             <form action="DataController" method="POST" class="sign-in-form">
             <h2 class="title">Ingreso</h2>
-            <p><font color="red">${errorMessage}</font></p>	
+            <p><font color="red">${errorMessage}</font></p>
+            <br>
             <div class="input-field-log">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Usuario" name="username" required/>
             </div>
             <div class="input-field-log">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Contraseï¿½a" name="password" required/>
+              <input type="password" placeholder="Contraseña" name="password" required/>
             </div>
+            <div class="g-recaptcha" data-sitekey="6LcUA4YaAAAAAD46eZN6pJc5sbVo81mFoZ0FCKS3" name="g-recaptcha-response"></div>
+            </br>
             <input type="submit" value="Ingresar" class="btn solid" />
             <!-- <p class="social-text">O ingresa con</p>
             <div class="social-media">
@@ -51,7 +55,7 @@
             <p><font color="red">${errorMessageRegister}</font></p>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Primer Nombre" name="firsName" required/>
+              <input type="text" placeholder="Primer Nombre" name="firstName" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>

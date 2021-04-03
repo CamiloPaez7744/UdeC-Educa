@@ -34,28 +34,35 @@ public class DataController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            
+        try ( PrintWriter out = response.getWriter()) {
+
             UserDAO userMeth = new UserDAO();
             boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
             out.print(validate);
-           
+
             if (validate) {
-                System.out.println("Funciona");
-                HttpSession session = request.getSession();
-                session.setAttribute("userSession", userMeth);
-                //request.getRequestDispatcher("Access.jsp").forward(request, response);
-                response.sendRedirect("Access.jsp");
+                String captcha = request.getParameter("g-recaptcha-response");
+                boolean verify = ValidateProcess.verificar(captcha);
+                if (verify) {
+                    System.out.println("Funciona");
+                    HttpSession session = request.getSession();
+                    session.setAttribute("userSession", userMeth);
+                    request.getRequestDispatcher("Access.jsp").forward(request, response);
+                    //response.sendRedirect("Access.jsp");
+                } else {
+                    request.getRequestDispatcher("Index.jsp").forward(request, response);
+                    request.setAttribute("errorMessage", "Captcha obligatorio");
+                }
             } else {
                 System.out.println("No funiona");
                 request.setAttribute("errorMessage", "Datos incorrectos");
                 request.getRequestDispatcher("Index.jsp").forward(request, response);
             }
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }      
+        }
     }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
