@@ -31,8 +31,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedStoredProcedureQueries({
     @NamedStoredProcedureQuery(
-        name = "sp_updateuser",
-        procedureName = "sp_updateuser",
+        name = "sp_updateUser",
+        procedureName = "sp_updateUser",
         parameters = {
             @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id")
         }

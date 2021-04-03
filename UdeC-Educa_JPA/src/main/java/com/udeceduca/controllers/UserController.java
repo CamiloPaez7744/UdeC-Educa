@@ -54,7 +54,8 @@ public class UserController extends HttpServlet {
                 ud.insertData(identification, firstName, secondName, firstLast, secondLast, email);
                 ud.sp_UpdateUser(identification);
                 ud.sp_EncryptPassword(identification, password);
-                response.sendRedirect("index.jsp");
+                request.setAttribute("errorMessage", "Por favor revise su correo electrónico");
+                request.getRequestDispatcher("Index.jsp").forward(request, response);
                 
             }
         }
