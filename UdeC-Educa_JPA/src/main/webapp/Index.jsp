@@ -114,9 +114,9 @@
         </div>
         <div class="panel right-panel">
           <div class="content">
-            <h3ï¿½Ya tienes cuenta!</h3>
+              <h3>¿Ya tienes cuenta!</h3>
             <p>
-              ï¿½Quï¿½ esperas? Ingresa ahora y disfruta de nuestra plataforma.
+              ¿Qué esperas? Ingresa ahora y disfruta de nuestra plataforma.
             </p>
             <button class="btn transparent" id="sign-in-btn">
               Ingresar
