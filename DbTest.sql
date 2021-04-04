@@ -37,7 +37,7 @@ END;
 $$ LANGUAGE plpgsql
 --MYSQL
 DELIMITER //
-CREATE FUNCTION fn_userGenerator(id varchar(10))
+CREATE OR REPLACE FUNCTION fn_userGenerator(id varchar(10))
 RETURNS VARCHAR(80)
 BEGIN
 DECLARE user_var VARCHAR(80);

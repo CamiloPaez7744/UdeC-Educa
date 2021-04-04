@@ -5,7 +5,6 @@
  */
 package com.udeceduca.controllers;
 
-import com.udeceduca.DAO.UserDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,8 +18,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author UdeC-Educa Dev's Team
  */
-@WebServlet(name = "DataController", urlPatterns = {"/DataController"})
-public class DataController extends HttpServlet {
+@WebServlet(name = "CloseSession", urlPatterns = {"/CloseSession"})
+public class CloseSession extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,35 +33,14 @@ public class DataController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try ( PrintWriter out = response.getWriter()) {
-
-            UserDAO userMeth = new UserDAO();
-            boolean validate = userMeth.queryFindUser(request.getParameter("username"), request.getParameter("password"));
-            out.print(validate);
-
-            if (validate) {
-                String captcha = request.getParameter("g-recaptcha-response");
-                boolean verify = ValidateProcess.verificar(captcha);
-                if (verify) {
-                    System.out.println("Funciona");
-                    //crear sesion de usuario
-                    HttpSession session = request.getSession();
-                    //enviarle atributos a la sesion
-                    session.setAttribute("userSession", userMeth);
-                    session.setMaxInactiveInterval(60);
-                    request.getRequestDispatcher("Access.jsp").forward(request, response);
-                    //response.sendRedirect("Access.jsp");
-                } else {
-                    request.getRequestDispatcher("Index.jsp").forward(request, response);
-                    request.setAttribute("errorMessage", "Captcha obligatorio");
-                }
-            } else {
-                System.out.println("No funiona");
-                request.setAttribute("errorMessage", "Datos incorrectos");
-                request.getRequestDispatcher("Index.jsp").forward(request, response);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        
+        String cs = request.getParameter("button");
+        
+        if("closeSession".equals(cs)){
+            HttpSession session = request.getSession();
+            session.removeAttribute("userSession");
+            request.getRequestDispatcher("Index.jsp").forward(request, response);
+            request.setAttribute("errorMessage", "Ha finalizado sesión");
         }
     }
 
@@ -93,7 +71,6 @@ public class DataController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
-
     }
 
     /**
