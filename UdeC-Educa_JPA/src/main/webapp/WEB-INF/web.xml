@@ -14,8 +14,11 @@
     </servlet-mapping>
     <session-config>
         <session-timeout>
-            15
+        15
         </session-timeout>
+        <cookie-config>
+            <http-only>true</http-only>
+        </cookie-config>
     </session-config>
     <welcome-file-list>
         <welcome-file>Index.jsp</welcome-file>

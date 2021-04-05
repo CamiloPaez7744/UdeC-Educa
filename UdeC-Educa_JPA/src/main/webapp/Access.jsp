@@ -183,6 +183,7 @@
 </html>
 <%
     } else {
-        response.sendRedirect("Index.jsp");
+        request.setAttribute("errorMessage", "Ingrese sus credenciales");
+        request.getRequestDispatcher("Index.jsp").forward(request, response);
     }
 %>

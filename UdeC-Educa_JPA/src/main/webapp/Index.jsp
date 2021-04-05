@@ -19,25 +19,27 @@
     <link rel="shortcut icon" href="public/images/udec-educa-icon.png" />
     <link rel="stylesheet" href="css/style.css" />
     <script async src="https://www.google.com/recaptcha/api.js"></script>
+    <script src="js/validate.js"></script>
     <title>UdeC-Educa</title>
   </head>
   <body>
     <div class="container">
       <div class="forms-container">
         <div class="signin-signup">
-            <form action="DataController" method="POST" class="sign-in-form">
+            <form action="DataController" method="POST" class="sign-in-form" onkeypress="return check(event)" onsubmit="return validate()">
             <h2 class="title">Ingreso</h2>
             <p><font color="red">${errorMessage}</font></p>
             <br>
-            <div class="input-field-log">
+            <div class="input-field wrap-input100 validate-input" data-validate = "Nombre de usuario requerido">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Usuario" name="username" required/>
+              <input type="hidden" name="CSRF" value="{{token}}"/>
+              <input type="text" placeholder="Usuario" name="username" id="username" pattern="[A-Za-z0-9_-]{1,40}" required/>
             </div>
-            <div class="input-field-log">
+            <div class="input-field wrap-input100 validate-input ">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Contraseña" name="password" required/>
+              <input type="password" placeholder="Contraseña" name="password" id="password" required/>
             </div>
-            <div class="g-recaptcha" data-sitekey="6LcUA4YaAAAAAD46eZN6pJc5sbVo81mFoZ0FCKS3" name="g-recaptcha-response"></div>
+            <div class="g-recaptcha" data-sitekey="6LcUA4YaAAAAAD46eZN6pJc5sbVo81mFoZ0FCKS3" id="recaptcha" name="g-recaptcha-response"></div>
             </br>
             <input type="submit" value="Ingresar" class="btn solid" />
             <!-- <p class="social-text">O ingresa con</p>
@@ -53,23 +55,23 @@
           <form action="UserController" method="POST" class="sign-up-form">
             <h2 class="title">Registrate</h2>
             <p><font color="red">${errorMessageRegister}</font></p>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Primer Nombre" name="firstName" required/>
             </div>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Segundo Nombre" name="secondName"/>
             </div>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Primer Apellido" name="firstLast" required/>
             </div>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Segundo Apellido" name="secondLast"/>
             </div>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Identificación" name="identification" required/>
             </div>
@@ -77,11 +79,11 @@
               <i class="fas fa-user"></i>
               <input type="text" placeholder="Fecha nacimiento" required/>
             </div> -->
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
               <i class="fas fa-envelope"></i>
-              <input type="text" placeholder="correo" name="email" required />
+              <input class="inputF" type="text" placeholder="correo" name="email" required />
             </div>
-            <div class="input-field">
+            <div class="input-field wrap-input100 validate-input">
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Contraseña" name="password" required/>
             </div>

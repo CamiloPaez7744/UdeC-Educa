@@ -22,3 +22,9 @@ insert into user_data (identification, first_name, second_name, first_lastname, 
 insert into user_data (identification, first_name, second_name, first_lastname, second_lastname, email, username, hash_pass, enc_pass) values ('3179403470', 'Kynthia', 'Karie', 'Hardiker', 'Aronowitz', 'karonowitz9@freewebs.com', '', '','');
 insert into user_data (identification, first_name, second_name, first_lastname, second_lastname, email, username, hash_pass, enc_pass) values ('176670528', 'Diana', '', 'Garzon', 'Gonzalez', 'dgarzong@ucundinamarca.edu.co', '', '','');
 
+insert into evento (identification, event_name) values ('1076444774','A por la comida');
+insert into evento (identification, event_name) values ('1076444774','Comité de responsabilidad');
+insert into evento (identification, event_name) values ('1076444774','Arrunchis con Diana');
+insert into evento (identification, event_name) values ('1076667562','Arreglar proyecto');
+insert into evento (identification, event_name) values ('1076667562','Aprendiendo');
+insert into evento (identification, event_name) values ('1076670528','Haciendo un evento');

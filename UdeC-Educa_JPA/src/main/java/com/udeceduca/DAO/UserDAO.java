@@ -48,9 +48,15 @@ public class UserDAO implements DAO {
     }
 
     public List<Evento> queryEvents(String id) {
+        if(id.equals(userDTO.getIdentification())){
         TypedQuery<Evento> queryEvents = em.createQuery("SELECT e FROM Evento e JOIN e.identification u WHERE e.identification.identification = :id ", Evento.class);
         List<Evento> rta = queryEvents.setParameter("id", id).getResultList();
         return rta;
+        } else {
+            List<Evento> rta = null;
+            return rta;
+        }
+        
     }
 
     public boolean sp_DecryptPassword(String id, String password) {
