@@ -6,6 +6,9 @@
 package com.udeceduca.DAO;
 
 //Data Access Object
+import com.udeceduca.DTO.EventDTO;
+import com.udeceduca.DTO.UserDTO;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,6 +17,7 @@ import javax.persistence.ParameterMode;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 import javax.persistence.StoredProcedureQuery;
+import javax.persistence.TypedQuery;
 
 //Access bewtween low level operations and high level operations
 /**
@@ -21,6 +25,8 @@ import javax.persistence.StoredProcedureQuery;
  * @author UdeC-Educa Dev's Team
  */
 public class UserDAO implements DAO {
+
+    public UserDTO userDTO = null;
 
     static UserData user = new UserData();
 
@@ -41,6 +47,12 @@ public class UserDAO implements DAO {
         encryptPassword.execute();
     }
 
+    public List<Evento> queryEvents(String id) {
+        TypedQuery<Evento> queryEvents = em.createQuery("SELECT e FROM Evento e JOIN e.identification u WHERE e.identification.identification = :id ", Evento.class);
+        List<Evento> rta = queryEvents.setParameter("id", id).getResultList();
+        return rta;
+    }
+
     public boolean sp_DecryptPassword(String id, String password) {
         StoredProcedureQuery decryptPassword = this.em.createNamedStoredProcedureQuery("sp_decryptPassword");
         boolean validate = false;
@@ -59,7 +71,7 @@ public class UserDAO implements DAO {
         return validate;
     }
 
-    public boolean queryFindUser(String username, String password) {
+    public UserDTO queryFindUser(String username, String password) {
         boolean confirmUser = false;
         Query findUser = this.em.createNamedQuery("UserData.findByUsername");
         findUser.setParameter("username", username);
@@ -68,6 +80,19 @@ public class UserDAO implements DAO {
             if (user != null) {
                 confirmUser = sp_DecryptPassword(user.getIdentification(), password);
                 System.out.println(confirmUser);
+                if (confirmUser) {
+                    //Instancias objeto UserDTO
+                    userDTO = new UserDTO(
+                            user.getIdentification(),
+                            user.getFirstName(),
+                            user.getSecondName(),
+                            user.getFirstLastname(),
+                            user.getSecondLastname(),
+                            user.getEmail(),
+                            user.getUsername()
+                    );
+                }
+
             } else {
                 confirmUser = false;
             }
@@ -76,14 +101,15 @@ public class UserDAO implements DAO {
             e.printStackTrace();
             confirmUser = false;
         }
-        return confirmUser;
+
+        return userDTO;
     }
 
     public boolean uniqueUser(String identification) {
         boolean unique = false;
         Query findByIdentification = this.em.createNamedQuery("UserData.findByIdentification");
         findByIdentification.setParameter("identification", identification);
-        try{
+        try {
             user = (UserData) findByIdentification.getSingleResult();
             if (user != null) {
                 return unique = true;
@@ -98,7 +124,7 @@ public class UserDAO implements DAO {
     }
 
     public void insertData(String identification, String first_name, String second_name, String first_lastname, String second_lastname, String email) {
-       byte arr[] = new byte[] {1};
+        byte arr[] = new byte[]{1};
         user.setIdentification(identification);
         user.setFirstName(first_name);
         user.setSecondName(second_name);

@@ -3,6 +3,7 @@
   <persistence-unit name="com.udeceduca_UdeC-Educa_JPA_war_1.0-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <class>com.udeceduca.DAO.UserData</class>
+    <class>com.udeceduca.DAO.Evento</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/udeceduca_test?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

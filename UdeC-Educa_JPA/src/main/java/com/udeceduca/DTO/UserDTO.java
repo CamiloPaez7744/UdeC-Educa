@@ -7,7 +7,7 @@ package com.udeceduca.DTO;
 
 /**
  *
- * 
+ *
  * @author UdeC-Educa Dev's Team
  */
 public class UserDTO {
@@ -19,9 +19,8 @@ public class UserDTO {
     private String second_lastname;
     private String email;
     private String username;
-    private String password;
 
-    public UserDTO(String identification, String first_name, String second_name, String first_lastname, String second_lastname, String email, String username, String password) {
+    public UserDTO(String identification, String first_name, String second_name, String first_lastname, String second_lastname, String email, String username) {
         this.identification = identification;
         this.first_name = first_name;
         this.second_name = second_name;
@@ -29,7 +28,6 @@ public class UserDTO {
         this.second_lastname = second_lastname;
         this.email = email;
         this.username = username;
-        this.password = password;
     }
 
     public String getIdentification() {
@@ -60,10 +58,6 @@ public class UserDTO {
         return username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
     public void setIdentification(String identification) {
         this.identification = identification;
     }
@@ -91,12 +85,5 @@ public class UserDTO {
     public void setUsername(String username) {
         this.username = username;
     }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    
-    
 
 }
