@@ -21,3 +21,4 @@ insert into user_data (identification, first_name, second_name, first_lastname, 
 insert into user_data (identification, first_name, second_name, first_lastname, second_lastname, email, username, hash_pass, enc_pass) values ('9418513625', 'Verla', 'Kin', 'Malzard', 'Strase', 'kstrase8@bing.com', '', '','');
 insert into user_data (identification, first_name, second_name, first_lastname, second_lastname, email, username, hash_pass, enc_pass) values ('3179403470', 'Kynthia', 'Karie', 'Hardiker', 'Aronowitz', 'karonowitz9@freewebs.com', '', '','');
 insert into user_data (identification, first_name, second_name, first_lastname, second_lastname, email, username, hash_pass, enc_pass) values ('176670528', 'Diana', '', 'Garzon', 'Gonzalez', 'dgarzong@ucundinamarca.edu.co', '', '','');
+

@@ -138,3 +138,10 @@ END
 
 
 --CALL sp_decryptPassword('8413840228', 'contraseña');
+
+CREATE TABLE evento(
+    event_id int PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    event_name VARCHAR(200),
+    identification VARCHAR(10),
+    CONSTRAINT fk_identification FOREIGN KEY (identification) REFERENCES user_data (identification)
+);

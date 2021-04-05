@@ -6,6 +6,7 @@
 package com.udeceduca.DAO;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,12 +16,14 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.NamedStoredProcedureQueries;
 import javax.persistence.NamedStoredProcedureQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.ParameterMode;
 import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -69,6 +72,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserData.findByHashPass", query = "SELECT u FROM UserData u WHERE u.hashPass = :hashPass")})
 public class UserData implements Serializable {
 
+    @Lob
+    @Column(name = "enc_pass")
+    private byte[] encPass;
+    @OneToMany(mappedBy = "identification")
+    private List<Evento> eventoList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -104,9 +113,6 @@ public class UserData implements Serializable {
     @Size(max = 128)
     @Column(name = "hash_pass")
     private String hashPass;
-    @Lob
-    @Column(name = "enc_pass")
-    private byte[] encPass;
 
     public UserData() {
     }
@@ -217,6 +223,15 @@ public class UserData implements Serializable {
     @Override
     public String toString() {
         return "com.udeceduca.DAO.UserData[ identification=" + identification + " ]";
+    }
+
+    @XmlTransient
+    public List<Evento> getEventoList() {
+        return eventoList;
+    }
+
+    public void setEventoList(List<Evento> eventoList) {
+        this.eventoList = eventoList;
     }
     
 }

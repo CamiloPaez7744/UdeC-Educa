@@ -5,10 +5,10 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" import="com.udeceduca.DAO.UserDAO"
-       
-%>
-<%UserDAO ud =(UserDAO) session.getAttribute("userSession");
-      if(ud != null){
+
+        %>
+<%UserDAO ud = (UserDAO) session.getAttribute("userSession");
+    if (ud != null) {
 %>
 <!DOCTYPE html>
 <html>
@@ -19,15 +19,15 @@
         <link rel="stylesheet" href="css/estilos.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&display=swap" rel="stylesheet">
     </head>
-   
+
     <body>
         <header>
             <nav>
                 <form action="CloseSession" method="post">
-                <button href="#">Inicio</button>
-                <button href="#">Eventos</button>
-                <button href="#">Nosotros</button>
-                <button type="submit" name="button" value="closeSession">cerrar sesion</button>
+                    <button href="#">Inicio</button>
+                    <button href="#">Eventos</button>
+                    <button href="#">Nosotros</button>
+                    <button type="submit" name="button" value="closeSession">cerrar sesion</button>
                 </form>
             </nav>
             <section class="textos-header">
@@ -42,20 +42,19 @@
         </header>
         <main>
             <section class="contenedor sobre-nosotros">
-                <h2 class="titulo">Nuestro producto</h2>
-                <div class="contenedor-sobre-nosotros">
-                    <img src="img/ilustracion2.svg" alt="" class="imagen-about-us">
-                    <div class="contenido-textos">
-                        <h3><span>1</span>Los mejores productos</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt veniam eius aspernatur ad
-                            consequuntur aperiam minima sed dicta odit numquam sapiente quam eum, architecto animi pariatur,
-                            velit doloribus laboriosam ut.</p>
-                        <h3><span>2</span>Los mejores productos</h3>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Deserunt veniam eius aspernatur ad
-                            consequuntur aperiam minima sed dicta odit numquam sapiente quam eum, architecto animi pariatur,
-                            velit doloribus laboriosam ut.</p>
-                    </div>
-                </div>
+                <table>
+                    <thead>
+                    <th>Nombre de Evento</th>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="eventName" items="${eventList}">
+                        <tr>
+                            <td><c:out value="${eventName}"></c:out></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>                            
+
             </section>
             <section class="portafolio">
                 <div class="contenedor">
@@ -183,7 +182,7 @@
 
 </html>
 <%
-    }else{
-    response.sendRedirect("Index.jsp");
-}
+    } else {
+        response.sendRedirect("Index.jsp");
+    }
 %>

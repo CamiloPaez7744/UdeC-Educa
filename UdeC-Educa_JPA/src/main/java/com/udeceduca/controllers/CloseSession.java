@@ -39,8 +39,9 @@ public class CloseSession extends HttpServlet {
         if("closeSession".equals(cs)){
             HttpSession session = request.getSession();
             session.removeAttribute("userSession");
-            request.getRequestDispatcher("Index.jsp").forward(request, response);
             request.setAttribute("errorMessage", "Ha finalizado sesión");
+            request.getRequestDispatcher("Index.jsp").forward(request, response);
+            
         }
     }
 
