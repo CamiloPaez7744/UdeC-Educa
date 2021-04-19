@@ -113,7 +113,3 @@ ELSE
 END IF;
 END
 //
-
-
-
---CALL sp_decryptPassword('8413840228', 'contraseña');
