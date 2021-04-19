@@ -1,12 +1,12 @@
 CREATE DATABASE udeceduca;
 USE udeceduca;
 
-CREATE TABLE intitution(
+CREATE TABLE institution(
     id_institution VARCHAR(4),
     name_intitution VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE tipo_identificacion(
+CREATE TABLE identification_type(
     id_type VARCHAR(3),
     type_name VARCHAR(40)
 )
@@ -18,7 +18,7 @@ CREATE TABLE competitor(
 
 CREATE TABLE userue(
     number_identification VARCHAR(10) PRIMARY KEY NOT NULL,
-    type_identificacion VARCHAR(3) NOT NULL FOREIGN KEY REFERENCES tipo_identificacion(id_type),
+    identification_type VARCHAR(3) NOT NULL FOREIGN KEY REFERENCES identification_type(id_type),
     first_name VARCHAR(30) NOT NULL,
     second_name VARCHAR(30),
     first_lastname VARCHAR(30) NOT NULL,
@@ -68,7 +68,7 @@ CREATE OR REPLACE FUNCTION fn_userGenerator(id varchar(10))
 RETURNS VARCHAR(80)
 BEGIN
 DECLARE user_var VARCHAR(80);
-SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(lOWER(CONCAT(SUBSTRING(LTRIM(RTRIM(first_name)),1,1), LTRIM(RTRIM(first_lastname)),SUBSTRING(identification, CHAR_LENGTH(identification)-1,2))),'á','a'),'é','e'),'í','i'),'ó','o'),'ú','u') INTO user_var  FROM user_data WHERE identification = id lIMIT 1;
+SELECT REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(lOWER(CONCAT(SUBSTRING(LTRIM(RTRIM(first_name)),1,1), LTRIM(RTRIM(first_lastname)),SUBSTRING(number_identification, CHAR_LENGTH(number_identification)-1,2))),'á','a'),'é','e'),'í','i'),'ó','o'),'ú','u') INTO user_var  FROM userue WHERE number_identification = id lIMIT 1;
 RETURN user_var;
 END;
 //
@@ -76,7 +76,7 @@ END;
 DELIMITER //
 CREATE PROCEDURE sp_updateUser(IN id VARCHAR(10))
 BEGIN
-UPDATE user_data SET username = fn_userGenerator(id) WHERE identification = id;
+UPDATE userue SET username = fn_userGenerator(id) WHERE number_identification = id;
 END;
 //
 
@@ -85,9 +85,9 @@ DELIMITER //
 CREATE OR REPLACE PROCEDURE sp_encryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30))
 BEGIN
 UPDATE user_data SET 
-    hash_pass = SHA2(user_password, 512),
-	enc_pass = AES_ENCRYPT(user_password, hash_pass)    
-WHERE identification = id;
+    access_key = SHA2(user_password, 512),
+	enc_pass = AES_ENCRYPT(user_password, access_key)    
+WHERE number_identification = id;
 END;
 //
 --Store Procedure for decrypt password
@@ -97,7 +97,7 @@ CREATE FUNCTION fn_decryptPass(id varchar(10))
 RETURNS VARCHAR(30)
 BEGIN
 DECLARE res VARCHAR(30);
-select AES_DECRYPT(enc_pass, hash_pass) into res FROM user_data where identification = id;
+select AES_DECRYPT(enc_pass, access_key) into res FROM userue where number_identification = id;
 RETURN res;
 END;
 //
