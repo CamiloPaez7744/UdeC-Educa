@@ -46,17 +46,17 @@ CREATE TABLE eventue(
     event_date 
 );
 
-CREATE TABLE suscripcion(
+CREATE TABLE suscription(
     id_suscription int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     number_identification VARCHAR(10) FOREIGN KEY REFERENCES userue(number_identification),
     event_id int FOREIGN KEY REFERENCES eventue(event_id)
 )
 
-CREATE TABLE realimentacion(
+CREATE TABLE feedback(
     id_feedback VARCHAR(300),
     descriptionfeed VARCHAR(300),
     calification int,
-    id_suscription int FOREIGN KEY REFERENCES suscripcion(id_suscription)
+    id_suscription int FOREIGN KEY REFERENCES suscription(id_suscription)
 )
 
 
