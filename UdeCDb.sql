@@ -1,20 +1,70 @@
-CREATE DATABASE udeceduca;
-USE udeceduca;
+# ---------------------------------------------------------------------- #
+# Target DBMS:           MySQL 5                                         #
+# Project name:          UdeC-Educa                                      #
+# Author:                Camilo Paez & Diana Garzon                      #
+# Created on:            2021-04-21 21:02                                #
+# ---------------------------------------------------------------------- #
+DROP DATABASE IF EXISTS udeceduca;
+
+CREATE DATABASE IF NOT EXISTS udeceduca;
+USE udeceduca
+
+-- First create the default data tables
+
+CREATE TABLE identification_type(
+    id_type VARCHAR(3),
+    type_id_name VARCHAR(40)
+);
+
+CREATE TABLE competitor(
+    id_competitor VARCHAR(5) PRIMARY KEY,
+    name_competitor_type VARCHAR(15)
+);
 
 CREATE TABLE institution(
     id_institution VARCHAR(4),
     name_intitution VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE identification_type(
-    id_type VARCHAR(3),
-    type_name VARCHAR(40)
-)
+CREATE TABLE category(
+    id_category VARCHAR(4) PRIMARY KEY NOT NULL,
+    category_name VARCHAR(80) NOT NULL
+);
 
-CREATE TABLE competitor(
-    id_competitor VARCHAR(5) PRIMARY KEY,
-    name_competitor_type VARCHAR(15)
-)
+CREATE TABLE statusue(
+    id_status VARCHAR(2) PRIMARY KEY NOT NULL,
+    status_name VARCHAR(30) NOT NULL
+);
+
+-- Fill the default tables
+
+INSERT INTO identification_type (id_type, type_id_name) values ('001', 'Cedula de Ciudadanía');
+INSERT INTO identification_type (id_type, type_id_name) values ('002', 'Tarjeta de Identidad');
+INSERT INTO identification_type (id_type, type_id_name) values ('003', 'Cedula de Estranjería'); 
+
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00000', 'No Participa'); 
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00001', 'Estudiante');
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00002', 'Graduado');
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00003', 'Docente');
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00004', 'Administrativo');
+INSERT INTO competitor (id_competitor, name_competitor_type) values ('00005', 'Comunidad'); 
+
+INSERT INTO institution (id_institution, name_intitution) values ('001','IED Bolivar');
+INSERT INTO institution (id_institution, name_intitution) values ('002', 'IED Santa María');
+INSERT INTO institution (id_institution, name_intitution) values ('003', 'Capellanía');
+INSERT INTO institution (id_institution, name_intitution) values ('004', 'La Presentación');
+
+INSERT INTO category (id_category, category_name) values ('01', 'Educación Continuada');  
+INSERT INTO category (id_category, category_name) values ('02', 'Proyección Social');  
+
+INSERT INTO statusue (id_status, status_name) values ('1', 'Disponible');
+INSERT INTO statusue (id_status, status_name) values ('2', 'No Disponible');
+INSERT INTO statusue (id_status, status_name) values ('3', 'En Desarrollo');
+INSERT INTO statusue (id_status, status_name) values ('4', 'Finalizado');
+
+
+
+
 
 CREATE TABLE userue(
     number_identification VARCHAR(10) PRIMARY KEY NOT NULL,
@@ -33,9 +83,9 @@ CREATE TABLE userue(
     enc_pass VARBINARY(200) NOT NULL
 );
 
-CREATE TABLE category(
-    id_category int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-);
+
+
+
 
 CREATE TABLE eventue(
     event_id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
