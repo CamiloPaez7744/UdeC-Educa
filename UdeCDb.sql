@@ -12,7 +12,7 @@ USE udeceduca
 -- First create the default data tables
 
 CREATE TABLE identification_type(
-    id_type VARCHAR(3),
+    id_type VARCHAR(3) PRIMARY KEY,
     type_id_name VARCHAR(40)
 );
 
@@ -22,7 +22,7 @@ CREATE TABLE competitor(
 );
 
 CREATE TABLE institution(
-    id_institution VARCHAR(4),
+    id_institution VARCHAR(4) PRIMARY KEY,
     name_intitution VARCHAR(200) NOT NULL
 );
 
@@ -64,11 +64,9 @@ INSERT INTO statusue (id_status, status_name) values ('4', 'Finalizado');
 
 
 
-
-
 CREATE TABLE userue(
     number_identification VARCHAR(10) PRIMARY KEY NOT NULL,
-    identification_type VARCHAR(3) NOT NULL FOREIGN KEY REFERENCES identification_type(id_type),
+    identification_type VARCHAR(3) NOT NULL, FOREIGN KEY (identification_type) REFERENCES identification_type(id_type),
     first_name VARCHAR(30) NOT NULL,
     second_name VARCHAR(30),
     first_lastname VARCHAR(30) NOT NULL,
@@ -76,38 +74,36 @@ CREATE TABLE userue(
     phone VARCHAR(10) NOT NULL,
     email VARCHAR(200) NOT NULL,
     birth_date DATE NOT NULL,
-    competitor_type VARCHAR(20) NOT NULL FOREIGN KEY REFERENCES competitor(id_competitor),
-    id_intitution VARCHAR(4) FOREIGN KEY REFERENCES institution(id_institution),
+    competitor_type VARCHAR(20) NOT NULL, FOREIGN KEY (competitor_type) REFERENCES competitor(id_competitor),
+    id_intitution VARCHAR(4), FOREIGN KEY (id_intitution) REFERENCES institution(id_institution),
     username VARCHAR(100) NOT NULL,
     access_key VARCHAR(128) NOT NULL,
     enc_pass VARBINARY(200) NOT NULL
 );
 
-
-
-
-
-CREATE TABLE eventue(
-    event_id int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    event_category VARCHAR(4),
-    event_name VARCHAR(200),
-    event_start_date TIMESTAMP,
-    event_end_date TIMESTAMP, 
-    event_date 
+CREATE TABLE eventue(    
+    event_name VARCHAR(200) PRIMARY KEY NOT NULL,
+    event_start_date DATETIME,
+    event_end_date DATETIME, 
+    facultad VARCHAR(200) NOT NULL,
+    programa VARCHAR(200) NOT NULL,
+    seccional VARCHAR(200) NOT NULL,
+    event_category VARCHAR(4), FOREIGN KEY (event_category) REFERENCES category(id_category),
+    event_status VARCHAR(2), FOREIGN KEY (event_status) REFERENCES statusue(id_status)
 );
 
 CREATE TABLE suscription(
-    id_suscription int AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    number_identification VARCHAR(10) FOREIGN KEY REFERENCES userue(number_identification),
-    event_id int FOREIGN KEY REFERENCES eventue(event_id)
-)
+    id_suscription INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    number_identification VARCHAR(10), FOREIGN KEY (number_identification) REFERENCES userue(number_identification),
+    event_name VARCHAR(200), FOREIGN KEY (event_name) REFERENCES eventue(event_name)
+);
 
 CREATE TABLE feedback(
-    id_feedback VARCHAR(300),
+    id_feedback INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
     descriptionfeed VARCHAR(300),
-    calification int,
-    id_suscription int FOREIGN KEY REFERENCES suscription(id_suscription)
-)
+    calification INT,
+    id_suscription INT, FOREIGN KEY (id_suscription) REFERENCES suscription(id_suscription)
+);
 
 
 
