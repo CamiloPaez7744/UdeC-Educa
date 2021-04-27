@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditInstitutionTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditInstitutionLabel_idInstitution}" for="idInstitution" />
+                    <h:inputText id="idInstitution" value="#{institutionController.selected.idInstitution}" title="#{bundle.EditInstitutionTitle_idInstitution}" required="true" requiredMessage="#{bundle.EditInstitutionRequiredMessage_idInstitution}"/>
+                    <h:outputLabel value="#{bundle.EditInstitutionLabel_nameIntitution}" for="nameIntitution" />
+                    <h:inputText id="nameIntitution" value="#{institutionController.selected.nameIntitution}" title="#{bundle.EditInstitutionTitle_nameIntitution}" required="true" requiredMessage="#{bundle.EditInstitutionRequiredMessage_nameIntitution}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{institutionController.update}" value="#{bundle.EditInstitutionSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditInstitutionViewLink}"/>
+                <br />
+                <h:commandLink action="#{institutionController.prepareList}" value="#{bundle.EditInstitutionShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditInstitutionIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
