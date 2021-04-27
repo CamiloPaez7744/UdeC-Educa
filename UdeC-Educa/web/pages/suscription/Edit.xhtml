@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditSuscriptionTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditSuscriptionLabel_idSuscription}" for="idSuscription" />
+                    <h:inputText id="idSuscription" value="#{suscriptionController.selected.idSuscription}" title="#{bundle.EditSuscriptionTitle_idSuscription}" required="true" requiredMessage="#{bundle.EditSuscriptionRequiredMessage_idSuscription}"/>
+                    <h:outputLabel value="#{bundle.EditSuscriptionLabel_numberIdentification}" for="numberIdentification" />
+                    <h:selectOneMenu id="numberIdentification" value="#{suscriptionController.selected.numberIdentification}" title="#{bundle.EditSuscriptionTitle_numberIdentification}" >
+                        <f:selectItems value="#{userueController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditSuscriptionLabel_eventName}" for="eventName" />
+                    <h:selectOneMenu id="eventName" value="#{suscriptionController.selected.eventName}" title="#{bundle.EditSuscriptionTitle_eventName}" >
+                        <f:selectItems value="#{eventueController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{suscriptionController.update}" value="#{bundle.EditSuscriptionSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditSuscriptionViewLink}"/>
+                <br />
+                <h:commandLink action="#{suscriptionController.prepareList}" value="#{bundle.EditSuscriptionShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditSuscriptionIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

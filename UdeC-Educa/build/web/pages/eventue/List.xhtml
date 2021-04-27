@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListEventueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListEventueEmpty}" rendered="#{eventueController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{eventueController.items.rowCount > 0}">
+                    <h:outputText value="#{eventueController.pagination.pageFirstItem + 1}..#{eventueController.pagination.pageLastItem + 1}/#{eventueController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{eventueController.previous}" value="#{bundle.Previous} #{eventueController.pagination.pageSize}" rendered="#{eventueController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{eventueController.next}" value="#{bundle.Next} #{eventueController.pagination.pageSize}" rendered="#{eventueController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{eventueController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_eventName}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventName}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_eventStartDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventStartDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_eventEndDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventEndDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_facultad}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.facultad}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_programa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.programa}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_seccional}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.seccional}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_eventCategory}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventCategory}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListEventueTitle_eventStatus}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.eventStatus}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{eventueController.prepareView}" value="#{bundle.ListEventueViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{eventueController.prepareEdit}" value="#{bundle.ListEventueEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{eventueController.destroy}" value="#{bundle.ListEventueDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{eventueController.prepareCreate}" value="#{bundle.ListEventueCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListEventueIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

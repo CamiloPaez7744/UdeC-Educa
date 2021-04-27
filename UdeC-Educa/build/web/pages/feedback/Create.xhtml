@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateFeedbackTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateFeedbackLabel_idFeedback}" for="idFeedback" />
+                    <h:inputText id="idFeedback" value="#{feedbackController.selected.idFeedback}" title="#{bundle.CreateFeedbackTitle_idFeedback}" required="true" requiredMessage="#{bundle.CreateFeedbackRequiredMessage_idFeedback}"/>
+                    <h:outputLabel value="#{bundle.CreateFeedbackLabel_descriptionfeed}" for="descriptionfeed" />
+                    <h:inputText id="descriptionfeed" value="#{feedbackController.selected.descriptionfeed}" title="#{bundle.CreateFeedbackTitle_descriptionfeed}" />
+                    <h:outputLabel value="#{bundle.CreateFeedbackLabel_calification}" for="calification" />
+                    <h:inputText id="calification" value="#{feedbackController.selected.calification}" title="#{bundle.CreateFeedbackTitle_calification}" />
+                    <h:outputLabel value="#{bundle.CreateFeedbackLabel_idSuscription}" for="idSuscription" />
+                    <h:selectOneMenu id="idSuscription" value="#{feedbackController.selected.idSuscription}" title="#{bundle.CreateFeedbackTitle_idSuscription}" >
+                        <f:selectItems value="#{suscriptionController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{feedbackController.create}" value="#{bundle.CreateFeedbackSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{feedbackController.prepareList}" value="#{bundle.CreateFeedbackShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateFeedbackIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

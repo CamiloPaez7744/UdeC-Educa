@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditStatusueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditStatusueLabel_idStatus}" for="idStatus" />
+                    <h:inputText id="idStatus" value="#{statusueController.selected.idStatus}" title="#{bundle.EditStatusueTitle_idStatus}" required="true" requiredMessage="#{bundle.EditStatusueRequiredMessage_idStatus}"/>
+                    <h:outputLabel value="#{bundle.EditStatusueLabel_statusName}" for="statusName" />
+                    <h:inputText id="statusName" value="#{statusueController.selected.statusName}" title="#{bundle.EditStatusueTitle_statusName}" required="true" requiredMessage="#{bundle.EditStatusueRequiredMessage_statusName}"/>
+                </h:panelGrid>
+                <h:commandLink action="#{statusueController.update}" value="#{bundle.EditStatusueSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditStatusueViewLink}"/>
+                <br />
+                <h:commandLink action="#{statusueController.prepareList}" value="#{bundle.EditStatusueShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditStatusueIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

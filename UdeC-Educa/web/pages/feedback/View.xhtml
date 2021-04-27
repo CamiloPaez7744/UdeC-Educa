@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewFeedbackTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewFeedbackLabel_idFeedback}"/>
+                    <h:outputText value="#{feedbackController.selected.idFeedback}" title="#{bundle.ViewFeedbackTitle_idFeedback}"/>
+                    <h:outputText value="#{bundle.ViewFeedbackLabel_descriptionfeed}"/>
+                    <h:outputText value="#{feedbackController.selected.descriptionfeed}" title="#{bundle.ViewFeedbackTitle_descriptionfeed}"/>
+                    <h:outputText value="#{bundle.ViewFeedbackLabel_calification}"/>
+                    <h:outputText value="#{feedbackController.selected.calification}" title="#{bundle.ViewFeedbackTitle_calification}"/>
+                    <h:outputText value="#{bundle.ViewFeedbackLabel_idSuscription}"/>
+                    <h:outputText value="#{feedbackController.selected.idSuscription}" title="#{bundle.ViewFeedbackTitle_idSuscription}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{feedbackController.destroyAndView}" value="#{bundle.ViewFeedbackDestroyLink}"/>
+                <br />
+                <br />
+                <h:link outcome="Edit" value="#{bundle.ViewFeedbackEditLink}"/>
+                <br />
+                <h:commandLink action="#{feedbackController.prepareCreate}" value="#{bundle.ViewFeedbackCreateLink}" />
+                <br />
+                <h:commandLink action="#{feedbackController.prepareList}" value="#{bundle.ViewFeedbackShowAllLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ViewFeedbackIndexLink}"/>
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
