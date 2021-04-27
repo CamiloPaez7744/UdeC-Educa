@@ -36,8 +36,6 @@ CREATE TABLE statusue(
     status_name VARCHAR(30) NOT NULL
 );
 
--- Fill the default tables
-
 INSERT INTO identification_type (id_type, type_id_name) values ('001', 'Cedula de Ciudadanía');
 INSERT INTO identification_type (id_type, type_id_name) values ('002', 'Tarjeta de Identidad');
 INSERT INTO identification_type (id_type, type_id_name) values ('003', 'Cedula de Estranjería'); 
@@ -76,6 +74,7 @@ CREATE TABLE userue(
     birth_date DATE NOT NULL,
     competitor_type VARCHAR(20) NOT NULL, FOREIGN KEY (competitor_type) REFERENCES competitor(id_competitor),
     id_intitution VARCHAR(4), FOREIGN KEY (id_intitution) REFERENCES institution(id_institution),
+    user_roler BOOLEAN NOT NULL,
     username VARCHAR(100) NOT NULL,
     access_key VARCHAR(128) NOT NULL,
     enc_pass VARBINARY(200) NOT NULL
@@ -120,7 +119,7 @@ END;
 //
 
 DELIMITER //
-CREATE PROCEDURE sp_updateUser(IN id VARCHAR(10))
+CREATE OR REPLACE PROCEDURE sp_updateUser(IN id VARCHAR(10))
 BEGIN
 UPDATE userue SET username = fn_userGenerator(id) WHERE number_identification = id;
 END;
@@ -130,16 +129,16 @@ END;
 DELIMITER //
 CREATE OR REPLACE PROCEDURE sp_encryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30))
 BEGIN
-UPDATE user_data SET 
+UPDATE userue SET 
     access_key = SHA2(user_password, 512),
 	enc_pass = AES_ENCRYPT(user_password, access_key)    
-WHERE number_identification = id;
+WHERE number_identification = id;   
 END;
 //
 --Store Procedure for decrypt password
 
 DELIMITER //
-CREATE FUNCTION fn_decryptPass(id varchar(10))
+CREATE  OR REPLACE FUNCTION fn_decryptPass(id varchar(10))
 RETURNS VARCHAR(30)
 BEGIN
 DECLARE res VARCHAR(30);
@@ -149,7 +148,7 @@ END;
 //
 
 DELIMITER //
-CREATE PROCEDURE sp_decryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30), INOUT res boolean)
+CREATE OR REPLACE PROCEDURE sp_decryptPassword(IN id VARCHAR(10), IN user_password VARCHAR(30), INOUT res boolean)
 BEGIN
 IF user_password = fn_decryptPass(id)
 THEN
