@@ -36,10 +36,6 @@ CREATE TABLE statusue(
     status_name VARCHAR(30) NOT NULL
 );
 
-
-
--- Fill the default tables
-
 INSERT INTO identification_type (id_type, type_id_name) values ('001', 'Cedula de Ciudadanía');
 INSERT INTO identification_type (id_type, type_id_name) values ('002', 'Tarjeta de Identidad');
 INSERT INTO identification_type (id_type, type_id_name) values ('003', 'Cedula de Estranjería'); 
