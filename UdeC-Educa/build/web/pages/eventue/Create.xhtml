@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateEventueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_eventName}" for="eventName" />
+                    <h:inputText id="eventName" value="#{eventueController.selected.eventName}" title="#{bundle.CreateEventueTitle_eventName}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_eventName}"/>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_eventStartDate}" for="eventStartDate" />
+                    <h:inputText id="eventStartDate" value="#{eventueController.selected.eventStartDate}" title="#{bundle.CreateEventueTitle_eventStartDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_eventEndDate}" for="eventEndDate" />
+                    <h:inputText id="eventEndDate" value="#{eventueController.selected.eventEndDate}" title="#{bundle.CreateEventueTitle_eventEndDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_facultad}" for="facultad" />
+                    <h:inputText id="facultad" value="#{eventueController.selected.facultad}" title="#{bundle.CreateEventueTitle_facultad}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_facultad}"/>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_programa}" for="programa" />
+                    <h:inputText id="programa" value="#{eventueController.selected.programa}" title="#{bundle.CreateEventueTitle_programa}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_programa}"/>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_seccional}" for="seccional" />
+                    <h:inputText id="seccional" value="#{eventueController.selected.seccional}" title="#{bundle.CreateEventueTitle_seccional}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_seccional}"/>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_eventCategory}" for="eventCategory" />
+                    <h:selectOneMenu id="eventCategory" value="#{eventueController.selected.eventCategory}" title="#{bundle.CreateEventueTitle_eventCategory}" >
+                        <f:selectItems value="#{categoryController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.CreateEventueLabel_eventStatus}" for="eventStatus" />
+                    <h:selectOneMenu id="eventStatus" value="#{eventueController.selected.eventStatus}" title="#{bundle.CreateEventueTitle_eventStatus}" >
+                        <f:selectItems value="#{statusueController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{eventueController.create}" value="#{bundle.CreateEventueSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{eventueController.prepareList}" value="#{bundle.CreateEventueShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateEventueIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

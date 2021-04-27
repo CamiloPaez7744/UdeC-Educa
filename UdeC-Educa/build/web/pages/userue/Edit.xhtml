@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditUserueTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditUserueLabel_numberIdentification}" for="numberIdentification" />
+                    <h:inputText id="numberIdentification" value="#{userueController.selected.numberIdentification}" title="#{bundle.EditUserueTitle_numberIdentification}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_numberIdentification}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_firstName}" for="firstName" />
+                    <h:inputText id="firstName" value="#{userueController.selected.firstName}" title="#{bundle.EditUserueTitle_firstName}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_firstName}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_secondName}" for="secondName" />
+                    <h:inputText id="secondName" value="#{userueController.selected.secondName}" title="#{bundle.EditUserueTitle_secondName}" />
+                    <h:outputLabel value="#{bundle.EditUserueLabel_firstLastname}" for="firstLastname" />
+                    <h:inputText id="firstLastname" value="#{userueController.selected.firstLastname}" title="#{bundle.EditUserueTitle_firstLastname}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_firstLastname}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_secondLastname}" for="secondLastname" />
+                    <h:inputText id="secondLastname" value="#{userueController.selected.secondLastname}" title="#{bundle.EditUserueTitle_secondLastname}" />
+                    <h:outputLabel value="#{bundle.EditUserueLabel_phone}" for="phone" />
+                    <h:inputText id="phone" value="#{userueController.selected.phone}" title="#{bundle.EditUserueTitle_phone}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_phone}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_email}" for="email" />
+                    <h:inputText id="email" value="#{userueController.selected.email}" title="#{bundle.EditUserueTitle_email}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_email}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_birthDate}" for="birthDate" />
+                    <h:inputText id="birthDate" value="#{userueController.selected.birthDate}" title="#{bundle.EditUserueTitle_birthDate}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_birthDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_userRoler}" for="userRoler" />
+                    <h:inputText id="userRoler" value="#{userueController.selected.userRoler}" title="#{bundle.EditUserueTitle_userRoler}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_userRoler}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_username}" for="username" />
+                    <h:inputText id="username" value="#{userueController.selected.username}" title="#{bundle.EditUserueTitle_username}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_username}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_accessKey}" for="accessKey" />
+                    <h:inputText id="accessKey" value="#{userueController.selected.accessKey}" title="#{bundle.EditUserueTitle_accessKey}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_accessKey}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_encPass}" for="encPass" />
+                    <h:inputTextarea rows="4" cols="30" id="encPass" value="#{userueController.selected.encPass}" title="#{bundle.EditUserueTitle_encPass}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_encPass}"/>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_identificationType}" for="identificationType" />
+                    <h:selectOneMenu id="identificationType" value="#{userueController.selected.identificationType}" title="#{bundle.EditUserueTitle_identificationType}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_identificationType}">
+                        <f:selectItems value="#{identificationTypeController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_competitorType}" for="competitorType" />
+                    <h:selectOneMenu id="competitorType" value="#{userueController.selected.competitorType}" title="#{bundle.EditUserueTitle_competitorType}" required="true" requiredMessage="#{bundle.EditUserueRequiredMessage_competitorType}">
+                        <f:selectItems value="#{competitorController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <h:outputLabel value="#{bundle.EditUserueLabel_idIntitution}" for="idIntitution" />
+                    <h:selectOneMenu id="idIntitution" value="#{userueController.selected.idIntitution}" title="#{bundle.EditUserueTitle_idIntitution}" >
+                        <f:selectItems value="#{institutionController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                </h:panelGrid>
+                <h:commandLink action="#{userueController.update}" value="#{bundle.EditUserueSaveLink}"/>
+                <br />
+                <br />
+                <h:link outcome="View" value="#{bundle.EditUserueViewLink}"/>
+                <br />
+                <h:commandLink action="#{userueController.prepareList}" value="#{bundle.EditUserueShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.EditUserueIndexLink}" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
