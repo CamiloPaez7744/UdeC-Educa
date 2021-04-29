@@ -3,7 +3,7 @@ package controller;
 import entities.Category;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.CategoryFacade;
+import business.CategoryService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class CategoryController implements Serializable {
     private Category current;
     private DataModel items = null;
     @EJB
-    private DAO.CategoryFacade ejbFacade;
+    private business.CategoryService categoryService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class CategoryController implements Serializable {
         return current;
     }
 
-    private CategoryFacade getFacade() {
-        return ejbFacade;
+    private CategoryService getCategoryService() {
+        return categoryService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class CategoryController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getCategoryService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getCategoryService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class CategoryController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getCategoryService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoryCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class CategoryController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getCategoryService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoryUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class CategoryController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getCategoryService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CategoryDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class CategoryController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getCategoryService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class CategoryController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getCategoryService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class CategoryController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(categoryService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(categoryService.findAll(), true);
     }
 
     public Category getCategory(java.lang.String id) {
-        return ejbFacade.find(id);
+        return categoryService.find(id);
     }
 
     @FacesConverter(forClass = Category.class)

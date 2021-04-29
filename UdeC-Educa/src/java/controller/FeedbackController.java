@@ -3,7 +3,7 @@ package controller;
 import entities.Feedback;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.FeedbackFacade;
+import business.FeedbackService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class FeedbackController implements Serializable {
     private Feedback current;
     private DataModel items = null;
     @EJB
-    private DAO.FeedbackFacade ejbFacade;
+    private business.FeedbackService feedbackService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class FeedbackController implements Serializable {
         return current;
     }
 
-    private FeedbackFacade getFacade() {
-        return ejbFacade;
+    private FeedbackService getFeedbackService() {
+        return feedbackService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class FeedbackController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getFeedbackService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getFeedbackService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class FeedbackController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getFeedbackService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FeedbackCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class FeedbackController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getFeedbackService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FeedbackUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class FeedbackController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getFeedbackService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("FeedbackDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class FeedbackController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getFeedbackService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class FeedbackController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getFeedbackService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class FeedbackController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(feedbackService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(feedbackService.findAll(), true);
     }
 
     public Feedback getFeedback(java.lang.Integer id) {
-        return ejbFacade.find(id);
+        return feedbackService.find(id);
     }
 
     @FacesConverter(forClass = Feedback.class)

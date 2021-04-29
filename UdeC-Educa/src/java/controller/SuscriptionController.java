@@ -3,7 +3,7 @@ package controller;
 import entities.Suscription;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.SuscriptionFacade;
+import business.SuscriptionService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class SuscriptionController implements Serializable {
     private Suscription current;
     private DataModel items = null;
     @EJB
-    private DAO.SuscriptionFacade ejbFacade;
+    private business.SuscriptionService suscriptionService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class SuscriptionController implements Serializable {
         return current;
     }
 
-    private SuscriptionFacade getFacade() {
-        return ejbFacade;
+    private SuscriptionService getSuscriptionService() {
+        return suscriptionService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class SuscriptionController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getSuscriptionService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getSuscriptionService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class SuscriptionController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getSuscriptionService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SuscriptionCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class SuscriptionController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getSuscriptionService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SuscriptionUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class SuscriptionController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getSuscriptionService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("SuscriptionDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class SuscriptionController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getSuscriptionService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class SuscriptionController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getSuscriptionService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class SuscriptionController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(suscriptionService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(suscriptionService.findAll(), true);
     }
 
     public Suscription getSuscription(java.lang.Integer id) {
-        return ejbFacade.find(id);
+        return suscriptionService.find(id);
     }
 
     @FacesConverter(forClass = Suscription.class)

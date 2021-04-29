@@ -3,7 +3,7 @@ package controller;
 import entities.Eventue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.EventueFacade;
+import business.EventueService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class EventueController implements Serializable {
     private Eventue current;
     private DataModel items = null;
     @EJB
-    private DAO.EventueFacade ejbFacade;
+    private business.EventueService eventueService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class EventueController implements Serializable {
         return current;
     }
 
-    private EventueFacade getFacade() {
-        return ejbFacade;
+    private EventueService getEventueService() {
+        return eventueService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class EventueController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getEventueService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getEventueService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class EventueController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getEventueService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class EventueController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getEventueService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class EventueController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getEventueService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class EventueController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getEventueService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class EventueController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getEventueService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class EventueController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(eventueService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(eventueService.findAll(), true);
     }
 
     public Eventue getEventue(java.lang.String id) {
-        return ejbFacade.find(id);
+        return eventueService.find(id);
     }
 
     @FacesConverter(forClass = Eventue.class)

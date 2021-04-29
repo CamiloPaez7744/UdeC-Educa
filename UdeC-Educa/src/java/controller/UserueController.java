@@ -3,7 +3,7 @@ package controller;
 import entities.Userue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.UserueFacade;
+import business.UserueService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class UserueController implements Serializable {
     private Userue current;
     private DataModel items = null;
     @EJB
-    private DAO.UserueFacade ejbFacade;
+    private business.UserueService userueService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class UserueController implements Serializable {
         return current;
     }
 
-    private UserueFacade getFacade() {
-        return ejbFacade;
+    private UserueService getUserueService() {
+        return userueService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,13 +50,14 @@ public class UserueController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getUserueService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
+
             };
         }
         return pagination;
@@ -81,7 +82,7 @@ public class UserueController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+                getUserueService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +99,7 @@ public class UserueController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getUserueService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserueUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +132,7 @@ public class UserueController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getUserueService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserueDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +140,7 @@ public class UserueController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getUserueService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +150,7 @@ public class UserueController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getUserueService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +182,15 @@ public class UserueController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(userueService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(userueService.findAll(), true);
     }
 
     public Userue getUserue(java.lang.String id) {
-        return ejbFacade.find(id);
+        return userueService.find(id);
     }
 
     @FacesConverter(forClass = Userue.class)

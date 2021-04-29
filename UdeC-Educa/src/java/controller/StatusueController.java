@@ -3,7 +3,7 @@ package controller;
 import entities.Statusue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.StatusueFacade;
+import business.StatusueService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class StatusueController implements Serializable {
     private Statusue current;
     private DataModel items = null;
     @EJB
-    private DAO.StatusueFacade ejbFacade;
+    private business.StatusueService statusueService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class StatusueController implements Serializable {
         return current;
     }
 
-    private StatusueFacade getFacade() {
-        return ejbFacade;
+    private StatusueService getStatusueService() {
+        return statusueService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class StatusueController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getStatusueService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getStatusueService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class StatusueController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getStatusueService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StatusueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class StatusueController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getStatusueService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StatusueUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class StatusueController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getStatusueService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("StatusueDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class StatusueController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getStatusueService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class StatusueController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getStatusueService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class StatusueController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(statusueService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(statusueService.findAll(), true);
     }
 
     public Statusue getStatusue(java.lang.String id) {
-        return ejbFacade.find(id);
+        return statusueService.find(id);
     }
 
     @FacesConverter(forClass = Statusue.class)

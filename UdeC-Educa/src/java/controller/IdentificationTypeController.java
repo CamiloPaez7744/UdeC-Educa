@@ -3,7 +3,7 @@ package controller;
 import entities.IdentificationType;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.IdentificationTypeFacade;
+import business.IdentificationTypeService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class IdentificationTypeController implements Serializable {
     private IdentificationType current;
     private DataModel items = null;
     @EJB
-    private DAO.IdentificationTypeFacade ejbFacade;
+    private business.IdentificationTypeService identificationTypeService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class IdentificationTypeController implements Serializable {
         return current;
     }
 
-    private IdentificationTypeFacade getFacade() {
-        return ejbFacade;
+    private IdentificationTypeService getIdentificationTypeService() {
+        return identificationTypeService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class IdentificationTypeController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getIdentificationTypeService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getIdentificationTypeService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class IdentificationTypeController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getIdentificationTypeService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("IdentificationTypeCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class IdentificationTypeController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getIdentificationTypeService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("IdentificationTypeUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class IdentificationTypeController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getIdentificationTypeService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("IdentificationTypeDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class IdentificationTypeController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getIdentificationTypeService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class IdentificationTypeController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getIdentificationTypeService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class IdentificationTypeController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(identificationTypeService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(identificationTypeService.findAll(), true);
     }
 
     public IdentificationType getIdentificationType(java.lang.String id) {
-        return ejbFacade.find(id);
+        return identificationTypeService.find(id);
     }
 
     @FacesConverter(forClass = IdentificationType.class)

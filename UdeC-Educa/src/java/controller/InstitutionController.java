@@ -3,7 +3,7 @@ package controller;
 import entities.Institution;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.InstitutionFacade;
+import business.InstitutionService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class InstitutionController implements Serializable {
     private Institution current;
     private DataModel items = null;
     @EJB
-    private DAO.InstitutionFacade ejbFacade;
+    private business.InstitutionService institutionService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class InstitutionController implements Serializable {
         return current;
     }
 
-    private InstitutionFacade getFacade() {
-        return ejbFacade;
+    private InstitutionService getInstitutionService() {
+        return institutionService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class InstitutionController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getInstitutionService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getInstitutionService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class InstitutionController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getInstitutionService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InstitutionCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class InstitutionController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getInstitutionService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InstitutionUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class InstitutionController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getInstitutionService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("InstitutionDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class InstitutionController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getInstitutionService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class InstitutionController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getInstitutionService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class InstitutionController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(institutionService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(institutionService.findAll(), true);
     }
 
     public Institution getInstitution(java.lang.String id) {
-        return ejbFacade.find(id);
+        return institutionService.find(id);
     }
 
     @FacesConverter(forClass = Institution.class)

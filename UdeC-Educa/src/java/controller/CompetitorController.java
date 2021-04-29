@@ -3,7 +3,7 @@ package controller;
 import entities.Competitor;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
-import DAO.CompetitorFacade;
+import business.CompetitorService;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -25,7 +25,7 @@ public class CompetitorController implements Serializable {
     private Competitor current;
     private DataModel items = null;
     @EJB
-    private DAO.CompetitorFacade ejbFacade;
+    private business.CompetitorService competitorService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +40,8 @@ public class CompetitorController implements Serializable {
         return current;
     }
 
-    private CompetitorFacade getFacade() {
-        return ejbFacade;
+    private CompetitorService getCompetitorService() {
+        return competitorService;
     }
 
     public PaginationHelper getPagination() {
@@ -50,12 +50,12 @@ public class CompetitorController implements Serializable {
 
                 @Override
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return getCompetitorService().count();
                 }
 
                 @Override
                 public DataModel createPageDataModel() {
-                    return new ListDataModel(getFacade().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
+                    return new ListDataModel(getCompetitorService().findRange(new int[]{getPageFirstItem(), getPageFirstItem() + getPageSize()}));
                 }
             };
         }
@@ -81,7 +81,7 @@ public class CompetitorController implements Serializable {
 
     public String create() {
         try {
-            getFacade().create(current);
+            getCompetitorService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CompetitorCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +98,7 @@ public class CompetitorController implements Serializable {
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getCompetitorService().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CompetitorUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +131,7 @@ public class CompetitorController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getCompetitorService().remove(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("CompetitorDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -139,7 +139,7 @@ public class CompetitorController implements Serializable {
     }
 
     private void updateCurrentItem() {
-        int count = getFacade().count();
+        int count = getCompetitorService().count();
         if (selectedItemIndex >= count) {
             // selected index cannot be bigger than number of items:
             selectedItemIndex = count - 1;
@@ -149,7 +149,7 @@ public class CompetitorController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            current = getCompetitorService().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 
@@ -181,15 +181,15 @@ public class CompetitorController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(competitorService.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(competitorService.findAll(), true);
     }
 
     public Competitor getCompetitor(java.lang.String id) {
-        return ejbFacade.find(id);
+        return competitorService.find(id);
     }
 
     @FacesConverter(forClass = Competitor.class)

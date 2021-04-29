@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author kmilo
+ * @author UdeC-Educa
  */
 @Stateless
 public class EventueFacade extends AbstractFacade<Eventue> {
@@ -28,5 +28,5 @@ public class EventueFacade extends AbstractFacade<Eventue> {
     public EventueFacade() {
         super(Eventue.class);
     }
-    
+        
 }
