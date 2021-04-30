@@ -17,7 +17,11 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.NamedStoredProcedureQueries;
+import javax.persistence.NamedStoredProcedureQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureParameter;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -33,6 +37,34 @@ import javax.xml.bind.annotation.XmlTransient;
 @Entity
 @Table(name = "userue")
 @XmlRootElement
+@NamedStoredProcedureQueries({
+    @NamedStoredProcedureQuery(
+        name = "sp_updateUser",
+        procedureName = "sp_updateUser",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id")
+        }
+    ),
+
+    @NamedStoredProcedureQuery(
+        name = "sp_encryptPassword",
+        procedureName = "sp_encryptPassword",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_password")
+        }
+    ),
+        
+    @NamedStoredProcedureQuery(
+        name = "sp_decryptPassword",
+        procedureName = "sp_decryptPassword",
+        parameters = {
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "id"),
+            @StoredProcedureParameter(mode = ParameterMode.IN, type = String.class, name = "user_password"),
+            @StoredProcedureParameter(mode = ParameterMode.INOUT, type = boolean.class, name = "res")
+        }
+    )    
+})
 @NamedQueries({
     @NamedQuery(name = "Userue.findAll", query = "SELECT u FROM Userue u")
     , @NamedQuery(name = "Userue.findByNumberIdentification", query = "SELECT u FROM Userue u WHERE u.numberIdentification = :numberIdentification")

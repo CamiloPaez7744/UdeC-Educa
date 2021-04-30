@@ -11,6 +11,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+
 /**
  *
  * @author kmilo
@@ -30,11 +31,13 @@ public class UserueFacade extends AbstractFacade<Userue> {
         super(Userue.class);
     }
     
+    //Creo que este condicional debería estar en el service también
     public boolean uniqueUser(String identification) {
         boolean unique = false;
         Query findByIdentification = this.em.createNamedQuery("Userue.findByNumberIdentification");
         findByIdentification.setParameter("number_identification", identification).getSingleResult();
         try {
+            //Creo que este Userue user es el objeto que se crea a partir de los atrib del entity sin necesidad de un pojo
             Userue user = (Userue) findByIdentification.getSingleResult();
             if (user != null) {
                 return unique = true;
@@ -47,40 +50,24 @@ public class UserueFacade extends AbstractFacade<Userue> {
         }
         return unique;
     }
+
+    public Userue queryFindUser(String username, String password) throws Exception{
+        try {
+            return (Userue)em.createNamedQuery("Userue.findByUsername").
+                    setParameter("username", username).getSingleResult();
+        } catch (Exception e) {
+            throw new Exception("Usuario no encontrado");
+        }
+    }
     
     /*
-    public Userue queryFindUser(String username, String password) {
-        boolean confirmUser = false;
-        Query findUser = this.em.createNamedQuery("Userue.findByUsername");
-        findUser.setParameter("username", username);
-        try {
-            Userue user = (Userue) findUser.getSingleResult();
-            if (user != null) {
-                confirmUser = sp_DecryptPassword(user.getNumberIdentification(), password);
+    El que llame este método debería tener el condicional 
+            boolean confirmUser = false;
+             if (user != null) {
+                confirmUser = sp_DecryptPassword(user.getIdentification(), password);
                 System.out.println(confirmUser);
-                if (confirmUser) {
-                    //Instancias objeto Userue
-                    user = new Userue(
-                            user.getNumberIdentification(),
-                            user.getFirstName(),
-                            user.getSecondName(),
-                            user.getFirstLastname(),
-                            user.getSecondLastname(),
-                            user.getEmail(),
-                            user.getUsername()
-                    );
-                }
+                Para que cuando valide que no existe el mismo usuario encripte la contraseña
+                        */
 
-            } else {
-                confirmUser = false;
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            confirmUser = false;
-        }
-
-        return userDTO;
-    }*/
     
 }
