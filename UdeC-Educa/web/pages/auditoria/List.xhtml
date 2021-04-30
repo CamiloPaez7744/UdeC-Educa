@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ListAuditoriaTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:form styleClass="jsfcrud_list_form">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputText escape="false" value="#{bundle.ListAuditoriaEmpty}" rendered="#{auditoriaController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{auditoriaController.items.rowCount > 0}">
+                    <h:outputText value="#{auditoriaController.pagination.pageFirstItem + 1}..#{auditoriaController.pagination.pageLastItem + 1}/#{auditoriaController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{auditoriaController.previous}" value="#{bundle.Previous} #{auditoriaController.pagination.pageSize}" rendered="#{auditoriaController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{auditoriaController.next}" value="#{bundle.Next} #{auditoriaController.pagination.pageSize}" rendered="#{auditoriaController.pagination.hasNextPage}"/>&nbsp;
+                    <h:dataTable value="#{auditoriaController.items}" var="item" border="0" cellpadding="2" cellspacing="0" rowClasses="jsfcrud_odd_row,jsfcrud_even_row" rules="all" style="border:solid 1px">
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAuditoriaTitle_authKey}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.authKey}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAuditoriaTitle_fecha}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fecha}">
+                                <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAuditoriaTitle_accion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.accion}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="#{bundle.ListAuditoriaTitle_contenido}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.contenido}"/>
+                        </h:column>
+                        <h:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{auditoriaController.prepareView}" value="#{bundle.ListAuditoriaViewLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{auditoriaController.prepareEdit}" value="#{bundle.ListAuditoriaEditLink}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{auditoriaController.destroy}" value="#{bundle.ListAuditoriaDestroyLink}"/>
+                        </h:column>
+                    </h:dataTable>
+                </h:panelGroup>
+                <br />
+                <h:commandLink action="#{auditoriaController.prepareCreate}" value="#{bundle.ListAuditoriaCreateLink}"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.ListAuditoriaIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
