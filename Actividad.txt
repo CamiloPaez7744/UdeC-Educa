@@ -1,0 +1,6 @@
+Adicionar un tabla llamada Auditoria_nombreEstudiante (ejemplo Auditoria_Rodrigo)
+En esa tabla almacenar un campo auto incremental, usuario, fecha, accion realizada, contenido
+
+Adicionar a su historia de usuario un método que despues de cada acción almacene en esta tabla
+y crear un método en donde valide que no se pueda realizar una acción de eliminar si no ha pasado
+mas de 15 minutos desde la ultima acción del usuario.

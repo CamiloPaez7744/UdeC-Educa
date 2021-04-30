@@ -11,9 +11,10 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
+
 /**
  *
- * @author kmilo
+ * @author UdeC-Educa
  */
 @Stateless
 public class UserueServiceImp implements UserueService {
@@ -54,6 +55,18 @@ public class UserueServiceImp implements UserueService {
     @Override
     public int count() {
         return userueFacade.count();
+    }
+    
+    // Aqui van los metodos que se crearon en el UserueFacade
+    
+    // @Override
+    public boolean uniqueUser(String identification) throws Exception{
+        return userueFacade.uniqueUser(identification);
+    }
+    
+    // @Override
+    public Userue queryFindUser(String username, String password) throws Exception{
+        return userueFacade.queryFindUser(username, password);
     }
                
 }
