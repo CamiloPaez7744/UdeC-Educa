@@ -80,6 +80,14 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Userue.findByAccessKey", query = "SELECT u FROM Userue u WHERE u.accessKey = :accessKey")})
 public class Userue implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Lob
+    @Column(name = "enc_pass")
+    private byte[] encPass;
+    @OneToMany(mappedBy = "numberIdentification")
+    private List<Auditoria> auditoriaList;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -134,11 +142,6 @@ public class Userue implements Serializable {
     @Size(min = 1, max = 128)
     @Column(name = "access_key")
     private String accessKey;
-    @Basic(optional = false)
-    @NotNull
-    @Lob
-    @Column(name = "enc_pass")
-    private byte[] encPass;
     @JoinColumn(name = "identification_type", referencedColumnName = "id_type")
     @ManyToOne(optional = false)
     private IdentificationType identificationType;
@@ -323,6 +326,15 @@ public class Userue implements Serializable {
     @Override
     public String toString() {
         return "entities.Userue[ numberIdentification=" + numberIdentification + " ]";
+    }
+
+    @XmlTransient
+    public List<Auditoria> getAuditoriaList() {
+        return auditoriaList;
+    }
+
+    public void setAuditoriaList(List<Auditoria> auditoriaList) {
+        this.auditoriaList = auditoriaList;
     }
     
 }

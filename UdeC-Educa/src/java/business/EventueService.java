@@ -6,6 +6,7 @@
 package business;
 
 import entities.Eventue;
+import entities.Userue;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -16,13 +17,13 @@ import javax.ejb.Local;
 @Local
 public interface EventueService {
 
-    void create(Eventue eventue);
+    void create(Eventue eventue, Userue user);
 
-    void edit(Eventue eventue);
+    void edit(Eventue eventue, Userue user);
 
-    void remove(Eventue eventue);
+    void remove(Eventue eventue, Userue user)throws Exception;
 
-    Eventue find(Object id);
+    Eventue find(Object id, Userue user);
 
     List<Eventue> findAll();
 

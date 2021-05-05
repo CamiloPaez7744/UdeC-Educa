@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -35,7 +37,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Auditoria.findByFecha", query = "SELECT a FROM Auditoria a WHERE a.fecha = :fecha")
     , @NamedQuery(name = "Auditoria.findByAccion", query = "SELECT a FROM Auditoria a WHERE a.accion = :accion")
     , @NamedQuery(name = "Auditoria.findByContenido", query = "SELECT a FROM Auditoria a WHERE a.contenido = :contenido")
-    , @NamedQuery(name = "Auditoria.findLast", query = "SELECT @@identify AS authKey FROM Auditoria a WHERE a.number_identification: = :id_usuario")    
+    , @NamedQuery(name = "Auditoria.findLast", query = " SELECT max(a.fecha) FROM Auditoria a WHERE a.numberIdentification = :id_usuario")    
 })
 public class Auditoria implements Serializable {
 
@@ -45,19 +47,6 @@ public class Auditoria implements Serializable {
     @Basic(optional = false)
     @Column(name = "auth_key")
     private Integer authKey;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
-    @Column(name = "id_usuario")
-    private String id_usuario;//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    public String getId_usuario() {
-        return id_usuario;
-    }
-
-    public void setId_usuario(String id_usuario) {
-        this.id_usuario = id_usuario;
-    }
     @Basic(optional = false)
     @NotNull
     @Column(name = "fecha")
@@ -71,6 +60,9 @@ public class Auditoria implements Serializable {
     @Size(max = 100)
     @Column(name = "contenido")
     private String contenido;
+    @JoinColumn(name = "number_identification", referencedColumnName = "number_identification")
+    @ManyToOne
+    private Userue numberIdentification;
 
     public Auditoria() {
     }
@@ -115,6 +107,14 @@ public class Auditoria implements Serializable {
 
     public void setContenido(String contenido) {
         this.contenido = contenido;
+    }
+
+    public Userue getNumberIdentification() {
+        return numberIdentification;
+    }
+
+    public void setNumberIdentification(Userue numberIdentification) {
+        this.numberIdentification = numberIdentification;
     }
 
     @Override

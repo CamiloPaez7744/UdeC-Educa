@@ -4,6 +4,7 @@ import entities.Eventue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import business.EventueService;
+import entities.Userue;
 
 import java.io.Serializable;
 import java.util.ResourceBundle;
@@ -28,6 +29,7 @@ public class EventueController implements Serializable {
     private business.EventueService eventueService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
+    private Userue user;
 
     public EventueController() {
     }
@@ -79,9 +81,10 @@ public class EventueController implements Serializable {
         return "Create";
     }
 
-    public String create() {
+    public String create() {        
         try {
-            getEventueService().create(current);
+            
+            getEventueService().create(current, user);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -98,7 +101,7 @@ public class EventueController implements Serializable {
 
     public String update() {
         try {
-            getEventueService().edit(current);
+            getEventueService().edit(current, user);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueUpdated"));
             return "View";
         } catch (Exception e) {
@@ -131,7 +134,9 @@ public class EventueController implements Serializable {
 
     private void performDestroy() {
         try {
-            getEventueService().remove(current);
+            user = new Userue(           
+                    "1076670528");
+            getEventueService().remove(current, user);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueDeleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Bundle").getString("PersistenceErrorOccured"));
@@ -189,7 +194,7 @@ public class EventueController implements Serializable {
     }
 
     public Eventue getEventue(java.lang.String id) {
-        return eventueService.find(id);
+        return eventueService.find(id, user);
     }
 
     @FacesConverter(forClass = Eventue.class)

@@ -8,6 +8,7 @@ package business;
 import DAO.AuditoriaFacade;
 import DAO.EventueFacade;
 import entities.Eventue;
+import entities.Userue;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,37 +23,39 @@ public class EventueServiceImp implements EventueService {
     
     @EJB
     private EventueFacade eventueFacade;
+    @EJB
      private AuditoriaFacade auditoriaFacade; 
 
     /* Aquí estan las reglas de negocio que almacenan las acciones
     en auditoria*/
     
     @Override
-    public void create(Eventue eventue) {     
-        auditoriaFacade.defaulData("create", eventue.getEventName(), "1076670528");
+    public void create(Eventue eventue, Userue user) {     
+        auditoriaFacade.defaulData("create", eventue.getEventName(), user);
         eventueFacade.create(eventue);
     }
 
     @Override
-    public void edit(Eventue eventue) {
-        auditoriaFacade.defaulData("edit", eventue.getEventName(), "1076670528");
+    public void edit(Eventue eventue, Userue user) {
+        auditoriaFacade.defaulData("edit", eventue.getEventName(), user);
         eventueFacade.edit(eventue);
         
     }
     
-    // @Override
-    public void remove(Eventue eventue, String userId) throws Exception{ 
-        if(auditoriaFacade.verifyTime(userId)){
+    @Override
+    public void remove(Eventue eventue, Userue user) throws Exception{ 
+        if(auditoriaFacade.verifyTime(user)){
             eventueFacade.remove(eventue);
+            auditoriaFacade.defaulData("remove", "Consulta exitosa", user);
         } else {
              throw new Exception("No tiene cupo de interacción suficiente");
         }                
         
     }
 
-    @Override
-    public Eventue find(Object id) {
-        auditoriaFacade.defaulData("find", "Consulta exitosa", "1076670528");
+    //@Override
+    public Eventue find(Object id, Userue user) {
+        auditoriaFacade.defaulData("find", "Consulta exitosa", user);
         return eventueFacade.find(id);
     }
 
@@ -69,10 +72,5 @@ public class EventueServiceImp implements EventueService {
     @Override
     public int count() {
         return eventueFacade.count();
-    }
-
-    @Override
-    public void remove(Eventue eventue) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    }  
 }

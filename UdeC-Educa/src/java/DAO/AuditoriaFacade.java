@@ -6,6 +6,7 @@
 package DAO;
 
 import entities.Auditoria;
+import entities.Userue;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,7 +34,7 @@ public class AuditoriaFacade extends AbstractFacade<Auditoria> {
         super(Auditoria.class);
     }
 
-    public Auditoria defaulData(String accion, String contenido, String usuario) {
+    public Auditoria defaulData(String accion, String contenido, Userue usuario) {
         Auditoria nuevaAuth = null;
         Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate  
         System.out.println(objDate);
@@ -47,7 +48,7 @@ public class AuditoriaFacade extends AbstractFacade<Auditoria> {
         int segundos = calendario.get(Calendar.SECOND);
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 
-        nuevaAuth.setId_usuario(usuario);
+        nuevaAuth.setNumberIdentification(usuario);
         nuevaAuth.setAccion(accion);
         nuevaAuth.setContenido(contenido);
         nuevaAuth.setFecha(objDate);
@@ -60,13 +61,14 @@ public class AuditoriaFacade extends AbstractFacade<Auditoria> {
             return (Auditoria) em.createNamedQuery("Auditoria.findLast").
                     setParameter("id_usuario", idUser).getSingleResult();
         } catch (Exception e) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage());
             throw new Exception("Primer vez manejando eventos");
         }
 
     }
 
-    public boolean verifyTime(String idUser) throws Exception {
-        Auditoria auth = verifyLast(idUser);
+    public boolean verifyTime(Userue user) throws Exception {
+        Auditoria auth = verifyLast(user.getNumberIdentification());
         Date lastDate = auth.getFecha();
 
         Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate  

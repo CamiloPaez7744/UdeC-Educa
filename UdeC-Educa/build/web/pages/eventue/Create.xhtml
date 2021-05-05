@@ -32,8 +32,8 @@
                     <h:outputLabel value="#{bundle.CreateEventueLabel_seccional}" for="seccional" />
                     <h:inputText id="seccional" value="#{eventueController.selected.seccional}" title="#{bundle.CreateEventueTitle_seccional}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_seccional}"/>
                     <h:outputLabel value="#{bundle.CreateEventueLabel_eventCategory}" for="eventCategory" />
-                    <h:selectOneMenu id="eventCategory" value="#{eventueController.selected.eventCategory}" title="#{bundle.CreateEventueTitle_eventCategory}" >
-                        <f:selectItems value="#{categoryController.itemsAvailableSelectOne}"/>
+                    <h:selectOneMenu id="eventCategory" value="#{eventueController.selected.eventCategory}" converter="#{categoryConverter}" title="#{bundle.CreateEventueTitle_eventCategory}" >
+                    <f:selectItems value="#{categoryController.itemsAvailableSelectOne}" var="categoryName" itemValue="#{categoryName}" itemLabel="#{categoryName.categoryName}"/>
                     </h:selectOneMenu>
                     <h:outputLabel value="#{bundle.CreateEventueLabel_eventStatus}" for="eventStatus" />
                     <h:selectOneMenu id="eventStatus" value="#{eventueController.selected.eventStatus}" title="#{bundle.CreateEventueTitle_eventStatus}" >
