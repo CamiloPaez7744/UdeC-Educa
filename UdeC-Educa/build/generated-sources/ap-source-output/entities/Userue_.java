@@ -1,5 +1,6 @@
 package entities;
 
+import entities.Auditoria;
 import entities.Competitor;
 import entities.IdentificationType;
 import entities.Institution;
@@ -10,13 +11,14 @@ import javax.persistence.metamodel.ListAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
-@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-30T09:32:21")
+@Generated(value="EclipseLink-2.5.2.v20140319-rNA", date="2021-04-30T17:30:25")
 @StaticMetamodel(Userue.class)
 public class Userue_ { 
 
     public static volatile SingularAttribute<Userue, String> firstLastname;
     public static volatile SingularAttribute<Userue, String> numberIdentification;
     public static volatile SingularAttribute<Userue, byte[]> encPass;
+    public static volatile ListAttribute<Userue, Auditoria> auditoriaList;
     public static volatile SingularAttribute<Userue, IdentificationType> identificationType;
     public static volatile SingularAttribute<Userue, Date> birthDate;
     public static volatile SingularAttribute<Userue, Competitor> competitorType;
