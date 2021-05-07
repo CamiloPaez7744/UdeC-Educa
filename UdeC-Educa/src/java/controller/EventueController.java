@@ -18,11 +18,18 @@ import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Named("eventueController")
 @SessionScoped
 public class EventueController implements Serializable {
+    @PersistenceContext(unitName = "UdeC-EducaPU")
+    private EntityManager em;
 
+    protected EntityManager getEntityManager() {
+        return em;
+    }
     private Eventue current;
     private DataModel items = null;
     @EJB
@@ -80,11 +87,23 @@ public class EventueController implements Serializable {
         selectedItemIndex = -1;
         return "Create";
     }
+    
+    public Userue verify(String idUser) throws Exception {
+        try {
+            return (Userue) em.createNamedQuery("Userue.findByNumberIdentification").
+                    setParameter("numberIdentification", idUser).getSingleResult();
+        } catch (Exception e) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + e.getMessage());
+            throw new Exception("No se encontro usuario");
+        }
 
-    public String create() {        
+    }
+
+    public String create() {    
+        
         try {
             
-            getEventueService().create(current, user);
+            getEventueService().create(current, verify("1076670528"));
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("EventueCreated"));
             return prepareCreate();
         } catch (Exception e) {

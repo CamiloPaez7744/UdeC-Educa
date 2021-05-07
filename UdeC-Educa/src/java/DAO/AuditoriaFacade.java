@@ -8,6 +8,7 @@ package DAO;
 import entities.Auditoria;
 import entities.Userue;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,29 +34,44 @@ public class AuditoriaFacade extends AbstractFacade<Auditoria> {
     public AuditoriaFacade() {
         super(Auditoria.class);
     }
-
-    public Auditoria defaulData(String accion, String contenido, Userue usuario) {
+    
+    public Auditoria newAuth (Userue usuario, String accion, String contenido) throws ParseException{
         Auditoria nuevaAuth = null;
-        Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate  
-        System.out.println(objDate);
-        String strDateFormat = "aaaa-MM-dd a hh: mm: ss"; // El formato de fecha está especificado  
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat); // La cadena de formato de fecha se pasa como un argumento al objeto 
-        System.out.println(objSDF.format(objDate));
-
-        Calendar calendario = Calendar.getInstance();
-        int hora = calendario.get(Calendar.HOUR_OF_DAY);
-        int minutos = calendario.get(Calendar.MINUTE);
-        int segundos = calendario.get(Calendar.SECOND);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
+        nuevaAuth.setAuthKey(1);
         nuevaAuth.setNumberIdentification(usuario);
         nuevaAuth.setAccion(accion);
         nuevaAuth.setContenido(contenido);
-        nuevaAuth.setFecha(objDate);
+        nuevaAuth.setFecha(currentDateTime());
         em.persist(nuevaAuth);
         return nuevaAuth;
     }
-
+    
+    public Date currentDateTime () throws ParseException{
+        Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate  
+        String strDateFormat = "yyyy-MM-dd HH: mm: ss"; // El formato de fecha está especificado  
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat); // La cadena de formato de fecha se pasa como un argumento al objeto 
+        String dateFinal = objSDF.format(objDate);
+        Date settingDate = new SimpleDateFormat("yyyy-MM-dd HH: mm: ss").parse(dateFinal); //cast a tipo date
+        
+        return settingDate;
+    }
+    
+    public boolean verifyTime(Userue user) throws Exception {
+        Auditoria auth = verifyLast(user.getNumberIdentification());
+        int diference = diferenceTime(currentDateTime(), auth.getFecha()); 
+        if (diference >= 15 ) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+    
+    public int diferenceTime(Date currentDate, Date lastDate){
+        
+        int diference = (int) (Math.abs(currentDate.getTime() - lastDate.getTime()) / (1000 * 60 * 60));
+        return diference;
+    }
+    
     public Auditoria verifyLast(String idUser) throws Exception {
         try {
             return (Auditoria) em.createNamedQuery("Auditoria.findLast").
@@ -66,34 +82,4 @@ public class AuditoriaFacade extends AbstractFacade<Auditoria> {
         }
 
     }
-
-    public boolean verifyTime(Userue user) throws Exception {
-        Auditoria auth = verifyLast(user.getNumberIdentification());
-        Date lastDate = auth.getFecha();
-
-        Date objDate = new Date(); // Sistema actual La fecha y la hora se asignan a objDate  
-        System.out.println(objDate);
-        String strDateFormat = "aaaa-MM-dd a hh: mm: ss"; // El formato de fecha está especificado  
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat); // La cadena de formato de fecha se pasa como un argumento al objeto 
-        System.out.println(objSDF.format(objDate));
-
-        Calendar calendario = Calendar.getInstance();
-        int hora = calendario.get(Calendar.HOUR_OF_DAY);
-        int minutos = calendario.get(Calendar.MINUTE);
-        int segundos = calendario.get(Calendar.SECOND);
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-
-        Date currentDate = objDate;
-        int lastMin = objDate.getMinutes();
-        int currentMin = currentDate.getMinutes();
-        int diference = lastMin - currentMin;
-        if(diference > 15){
-            return false;        
-        } else {
-            return true;
-        }
-                
-    }
-
 }
-

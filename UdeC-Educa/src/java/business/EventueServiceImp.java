@@ -9,7 +9,10 @@ import DAO.AuditoriaFacade;
 import DAO.EventueFacade;
 import entities.Eventue;
 import entities.Userue;
+import java.text.ParseException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 //import DAO.AuditoriaFacade;
@@ -31,22 +34,29 @@ public class EventueServiceImp implements EventueService {
     
     @Override
     public void create(Eventue eventue, Userue user) {     
-        auditoriaFacade.defaulData("create", eventue.getEventName(), user);
-        eventueFacade.create(eventue);
+        try {
+            auditoriaFacade.newAuth(user, "create", eventue.getEventName());
+            eventueFacade.create(eventue);
+        } catch (ParseException ex) {
+            Logger.getLogger(EventueServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
     public void edit(Eventue eventue, Userue user) {
-        auditoriaFacade.defaulData("edit", eventue.getEventName(), user);
-        eventueFacade.edit(eventue);
-        
+        try {
+            auditoriaFacade.newAuth( user, "edit", eventue.getEventName());
+            eventueFacade.edit(eventue);
+        } catch (ParseException ex) {
+            Logger.getLogger(EventueServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     @Override
     public void remove(Eventue eventue, Userue user) throws Exception{ 
         if(auditoriaFacade.verifyTime(user)){
             eventueFacade.remove(eventue);
-            auditoriaFacade.defaulData("remove", "Consulta exitosa", user);
+            auditoriaFacade.newAuth(user, "remove", "Consulta exitosa");
         } else {
              throw new Exception("No tiene cupo de interacción suficiente");
         }                
@@ -55,7 +65,11 @@ public class EventueServiceImp implements EventueService {
 
     //@Override
     public Eventue find(Object id, Userue user) {
-        auditoriaFacade.defaulData("find", "Consulta exitosa", user);
+        try {
+            auditoriaFacade.newAuth(user, "find", "Consulta exitosa");
+        } catch (ParseException ex) {
+            Logger.getLogger(EventueServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return eventueFacade.find(id);
     }
 
