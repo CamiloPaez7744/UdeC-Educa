@@ -19,11 +19,11 @@
                     <h:inputText id="eventName" value="#{eventueController.selected.eventName}" title="#{bundle.CreateEventueTitle_eventName}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_eventName}"/>
                     <h:outputLabel value="#{bundle.CreateEventueLabel_eventStartDate}" for="eventStartDate" />
                     <h:inputText id="eventStartDate" value="#{eventueController.selected.eventStartDate}" title="#{bundle.CreateEventueTitle_eventStartDate}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime pattern="yyyy-MM-dd HH: mm: ss" />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.CreateEventueLabel_eventEndDate}" for="eventEndDate" />
                     <h:inputText id="eventEndDate" value="#{eventueController.selected.eventEndDate}" title="#{bundle.CreateEventueTitle_eventEndDate}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        <f:convertDateTime pattern="yyyy-MM-dd HH: mm: ss" />
                     </h:inputText>
                     <h:outputLabel value="#{bundle.CreateEventueLabel_facultad}" for="facultad" />
                     <h:inputText id="facultad" value="#{eventueController.selected.facultad}" title="#{bundle.CreateEventueTitle_facultad}" required="true" requiredMessage="#{bundle.CreateEventueRequiredMessage_facultad}"/>
