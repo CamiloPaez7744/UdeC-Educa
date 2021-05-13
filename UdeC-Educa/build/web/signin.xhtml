@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <title>Bienvenido</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <div class="container-fluid">
+            <div class="col-md-8 mx-auto col-lg-6">
+                <div class="p-4 p-md-4 border rounded-4 bg-light">
+                <h:form class="row g-1 needs-validation">
+                    <h1 class="text-center">Registrarse</h1>
+                    <h:selectOneMenu class="mb-3 form-select " id="idIdentificationType" value="#{userueController.identificationType}" converter="#{identificationTypeConverter}" required="true" title="#{bundle.CreateUserueTitle_idIdentificationType}" >
+                        <label for="indentificationType" class="form-label">Tipo de Identificación</label>
+                        <f:selectItems value="#{userueController.identificationTypes}" var="it" itemValue="#{it}" itemLabel="#{it.typeIdName}"/>
+                    </h:selectOneMenu>
+                    
+                    <div class=" mb-3 row col-md-7">
+                        <label for="userId" class="form-label">Numero de Identificación</label>
+                        <h:inputText class="form-control" id="userId"  label="No. Identificación" maxlength="10"            
+                                     size="10" autocomplete="off" required="true"              
+                                     requiredMessage="El numero de documento es requerido"/>                
+                    </div>
+                    <div class="col-md-6">
+                        <label for="firstName" class="form-label">Primer Nombre</label>
+                        <h:inputText class="form-control" id="firstName"  label="Primer Nombre" maxlength="10"            
+                                     size="10" autocomplete="off" required="true"             
+                                     requiredMessage="Este campo es obligatorio"/>                
+                    </div>
+                    <div class=" col-md-6">
+                        <label for="secondName" class="form-label">Segundo nombre</label>
+                        <h:inputText class="form-control" id="secondName"  label="Segundo nombre" maxlength="10"            
+                                     size="10" autocomplete="off"/>                
+                    </div>
+                    <div class="col-md-6">
+                        <label for="firstLast" class="form-label">Primer Apellido</label>
+                        <h:inputText class="form-control" id="firstLast"  label="Primer Apellido" maxlength="10"            
+                                     size="10" autocomplete="off" required="true"              
+                                     requiredMessage="Este campo es obligatorio"/>                
+                    </div>
+                    <div class=" col-md-6">
+                        <label for="secondLast" class="form-label">Segundo Apellido</label>
+                        <h:inputText class="form-control" id="secondLast"  label="Segundo Apellido" maxlength="10"            
+                                     size="10" autocomplete="off"/>                
+                    </div>
+                    <div class=" col-md-6">
+                        <label for="phone" class="form-label">celular</label>
+                        <h:inputText class="form-control" id="phone"  label="celular" maxlength="10"            
+                                     size="10" autocomplete="off" required="true"              
+                                     requiredMessage="Este campo es obligatorio"/>                
+                    </div>
+                    <div class=" col-md-6">
+                        <label for="email" class="form-label">Correo</label>
+                        <h:inputText class="form-control" id="email"  label="correo" maxlength="10"            
+                                     size="10" autocomplete="off" required="true"              
+                                     requiredMessage="Este campo es obligatorio"/>                
+                    </div>
+                    <div class="mb-2 row col-md-7">
+                        <label for="dateB" class="form-label">Fecha de nacimiento</label>
+                        <h:inputText pt:type="date" pt:placeholder="MM/dd/yyyy" class="form-control" id="dateB"  label="Fecha de nacimiento" maxlength="10"            
+                                     size="10" autocomplete="off" required="true" >
+                        <f:convertDateTime pattern="yyyy-MM-dd" />
+                        <f:passThroughAttribute name="type" value="date"/>
+                        <f:passThroughAttribute name="min" value="1950-01-01"/>
+                        <f:passThroughAttribute name="max" value="2010-12-31"/>
+                        <h:message for="requiredDate" errorStyle="red" ></h:message>
+                        </h:inputText>
+                    </div>
+                    <h:selectOneMenu class="mb-3 form-select " id="idIntitution" value="#{userueController.selected.idIntitution}" required="true" title="#{bundle.CreateUserueTitle_idIntitution}" >
+                        <label for="institution" class="form-label">Institución</label>
+                        <f:selectItems value="#{institutionController.itemsAvailableSelectOne}" />
+                    </h:selectOneMenu>
+                    <h:selectOneMenu class="mb-3 form-select " id="competitorType" value="#{userueController.selected.competitorType}" title="#{bundle.CreateUserueTitle_competitorType}" required="true" requiredMessage="#{bundle.CreateUserueRequiredMessage_competitorType}">
+                        <label for="competitorType" class="form-label">Tipo de participante</label>
+                        <f:selectItems value="#{competitorController.itemsAvailableSelectOne}"/>
+                    </h:selectOneMenu>
+                    <div class=" col-md-7">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Contraseña</label>
+                        <h:inputSecret class="form-control" id="inputPassword3"/>                
+                    </div>
+                   <div class="form-group row mb-3">
+
+                        <div class="col-sm-5">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-2 mb-3">
+                            <h:commandButton class="btn btn-warning" value="Ingresar"/>
+                        </div> 
+                        <div class="col-md-4 col-sm-2">
+                            <h:commandButton class="btn btn-primary" value="Registro" action="signin"/>
+                        </div>
+                    </div>
+                                       
+                </h:form>
+                    </div>
+            </div>
+        </div>
+    </h:body>
+</html>

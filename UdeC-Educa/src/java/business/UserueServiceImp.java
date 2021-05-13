@@ -8,6 +8,8 @@ package business;
 import DAO.UserueFacade;
 import entities.Userue;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -24,7 +26,14 @@ public class UserueServiceImp implements UserueService {
 
     @Override
     public void create(Userue userue) {
-        userueFacade.create(userue);
+        try {
+            if(userUnique(userue.getNumberIdentification())){
+                userueFacade.create(userue);
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(UserueServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }
 
     @Override
@@ -65,8 +74,16 @@ public class UserueServiceImp implements UserueService {
     }
     
     // @Override
-    public Userue queryFindUser(String username, String password) throws Exception{
-        return userueFacade.queryFindUser(username, password);
+    public Userue queryFindUser(String username) throws Exception{
+        return userueFacade.queryFindUser(username);
+    }
+    
+    public boolean userLog(Userue userue) throws Exception{
+        return userueFacade.verifyUser(userue.getUsername(),userue.getEncPass().toString());
+    }
+
+    private boolean userUnique(String numberIdentification) throws Exception {
+        return userueFacade.userUnique(numberIdentification);
     }
                
 }

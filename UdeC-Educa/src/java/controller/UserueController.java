@@ -4,8 +4,9 @@ import entities.Userue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import business.UserueService;
-
+import entities.IdentificationType;
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -23,17 +24,24 @@ import javax.faces.model.SelectItem;
 public class UserueController implements Serializable {
 
     private Userue current;
+    private List<IdentificationType> identificationTypes;
+    private IdentificationType identificationType;
     private DataModel items = null;
     @EJB
     private business.UserueService userueService;
+    @EJB
+    private business.IdentificationTypeService identificationTypeService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
     public UserueController() {
+        
     }
 
     public Userue getSelected() {
+        identificationTypes = identificationTypeService.findAll();
         if (current == null) {
+            identificationType = new IdentificationType();
             current = new Userue();
             selectedItemIndex = -1;
         }
@@ -82,7 +90,7 @@ public class UserueController implements Serializable {
 
     public String create() {
         try {
-                getUserueService().create(current);
+            getUserueService().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -192,7 +200,25 @@ public class UserueController implements Serializable {
     public Userue getUserue(java.lang.String id) {
         return userueService.find(id);
     }
+    
+    //IdentificationType
 
+    public List<IdentificationType> getIdentificationTypes() {
+        return identificationTypes;
+    }
+
+    public void setIdentificationTypes(List<IdentificationType> identificationTypes) {
+        this.identificationTypes = identificationTypes;
+    }
+
+    public IdentificationType getIdentificationType() {
+        return identificationType;
+    }
+
+    public void setIdentificationType(IdentificationType identificationType) {
+        this.identificationType = identificationType;
+    }
+    
     @FacesConverter(forClass = Userue.class)
     public static class UserueControllerConverter implements Converter {
 
@@ -230,7 +256,7 @@ public class UserueController implements Serializable {
                 throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + Userue.class.getName());
             }
         }
-
+        
     }
-
+    
 }

@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 
 
 /**
@@ -51,7 +52,7 @@ public class UserueFacade extends AbstractFacade<Userue> {
         return unique;
     }
 
-    public Userue queryFindUser(String username, String password) throws Exception{
+    public Userue queryFindUser(String username) throws Exception{
         try {
             return (Userue)em.createNamedQuery("Userue.findByUsername").
                     setParameter("username", username).getSingleResult();
@@ -60,6 +61,50 @@ public class UserueFacade extends AbstractFacade<Userue> {
         }
     }
     
+    public boolean userUnique(String identification) throws Exception{
+        try {
+            return (boolean) em.createNamedQuery("Userue.findByNumberIdentification").
+                    setParameter("numberIdentification", identification).getSingleResult();
+        } catch (Exception e) {
+            throw new Exception("Usuario existente");
+        }
+    }
+    
+    public void sp_UpdateUser(String id) {
+        StoredProcedureQuery generateUsername = this.em.createNamedStoredProcedureQuery("sp_updateUser");
+        generateUsername.setParameter("id", id);
+        generateUsername.execute();
+    }
+
+    public void sp_EncryptPassword(String id, String password) {
+        StoredProcedureQuery encryptPassword = this.em.createNamedStoredProcedureQuery("sp_encryptPassword");
+        encryptPassword.setParameter("id", id);
+        encryptPassword.setParameter("user_password", password);
+        encryptPassword.execute();
+    }
+    
+    public boolean sp_DecryptPassword(String id, String password) {
+        StoredProcedureQuery decryptPassword = this.em.createNamedStoredProcedureQuery("sp_decryptPassword");
+        boolean validate = false;
+        decryptPassword.setParameter("id", id);
+        decryptPassword.setParameter("user_password", password);
+        decryptPassword.setParameter("res", false);
+        decryptPassword.execute();
+
+        long var = (long) decryptPassword.getOutputParameterValue("res");
+        if (var == 1) {
+            validate = true;
+        }
+        System.out.println(var);
+
+        // boolean validate = (boolean) decryptPassword.getOutputParameterValue("res");
+        return validate;
+    }
+   
+    public boolean verifyUser(String user, String password) throws Exception{
+        Userue userFound = queryFindUser(user);
+        return sp_DecryptPassword(userFound.getNumberIdentification(), password);
+    }
     /*
     El que llame este método debería tener el condicional 
             boolean confirmUser = false;
