@@ -4,9 +4,12 @@ import entities.Eventue;
 import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import business.EventueService;
+import entities.Category;
+import entities.Statusue;
 import entities.Userue;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -31,9 +34,17 @@ public class EventueController implements Serializable {
         return em;
     }
     private Eventue current;
+    private List<Statusue> statuses;
+    private Statusue status;
+    private List<Category> categories;
+    private Category category;
     private DataModel items = null;
     @EJB
     private business.EventueService eventueService;
+    @EJB
+    private business.StatusueService statusueService;
+    @EJB
+    private business.CategoryService categoryService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Userue user;
@@ -42,6 +53,7 @@ public class EventueController implements Serializable {
     }
 
     public Eventue getSelected() {
+        
         if (current == null) {
             current = new Eventue();
             selectedItemIndex = -1;
@@ -183,7 +195,46 @@ public class EventueController implements Serializable {
         }
         return items;
     }
+    
+    //Status
 
+    public List<Statusue> getStatuses() {
+        statuses=statusueService.findAll();
+        return statuses;
+    }
+
+    public void setStatuses(List<Statusue> statuses) {
+        this.statuses = statuses;
+    }
+
+    public Statusue getStatus() {
+        return status;
+    }
+
+    public void setStatus(Statusue status) {
+        this.status = status;
+    }
+    
+    //Category
+
+    public List<Category> getCategories() {
+        categories=categoryService.findAll();
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+    
+    
     private void recreateModel() {
         items = null;
     }

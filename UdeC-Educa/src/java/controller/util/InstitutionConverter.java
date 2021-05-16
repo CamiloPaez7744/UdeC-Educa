@@ -1,29 +1,28 @@
 package controller.util;
 
-import DAO.IdentificationTypeFacade;
-import entities.IdentificationType;
-import entities.Userue;
+import DAO.InstitutionFacade;
+import entities.Institution;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
 
-@FacesConverter("identificationTypeConverter")
-public class IdentificationTypeConverter implements Converter {
+@FacesConverter("intitutionConverter")
+public class InstitutionConverter implements Converter {
 
     @Inject
-    private IdentificationTypeFacade identificationTypeFacade;
+    private InstitutionFacade intitutionFacade;
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-                 return (IdentificationType)this.identificationTypeFacade.find(value);
+                 return (Institution)this.intitutionFacade.find(value);
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value instanceof Userue) {         
-            return ((IdentificationType) value).getIdType();
+        if (value instanceof Institution) {         
+            return ((Institution) value).getIdInstitution();
         } else {
             return "salida "+value.toString();
         }

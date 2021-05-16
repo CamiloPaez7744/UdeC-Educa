@@ -5,7 +5,13 @@
  */
 package business;
 
+import DAO.CompetitorFacade;
+import DAO.IdentificationTypeFacade;
+import DAO.InstitutionFacade;
 import DAO.UserueFacade;
+import entities.Competitor;
+import entities.IdentificationType;
+import entities.Institution;
 import entities.Userue;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,6 +29,15 @@ public class UserueServiceImp implements UserueService {
     
     @EJB
     private UserueFacade userueFacade; 
+    
+    @EJB
+    private IdentificationTypeFacade identificationTypeFacade; 
+    
+    @EJB
+    private CompetitorFacade competitorFacade; 
+    
+    @EJB
+    private InstitutionFacade institutionFacade; 
 
     @Override
     public void create(Userue userue) {
@@ -84,6 +99,11 @@ public class UserueServiceImp implements UserueService {
 
     private boolean userUnique(String numberIdentification) throws Exception {
         return userueFacade.userUnique(numberIdentification);
+    }
+
+    @Override
+    public void create(Userue current, Institution institution, IdentificationType identificationType, Competitor competitor) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
                
 }

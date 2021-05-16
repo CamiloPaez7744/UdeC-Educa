@@ -5,6 +5,9 @@
  */
 package business;
 
+import entities.Competitor;
+import entities.IdentificationType;
+import entities.Institution;
 import entities.Userue;
 import java.util.List;
 import javax.ejb.Local;
@@ -29,5 +32,7 @@ public interface UserueService {
     List<Userue> findRange(int[] range);
 
     int count();
+
+    public void create(Userue current, Institution institution, IdentificationType identificationType, Competitor competitor);
     
 }
