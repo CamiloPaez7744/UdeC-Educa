@@ -5,6 +5,8 @@ import controller.util.JsfUtil;
 import controller.util.PaginationHelper;
 import business.UserueService;
 import entities.IdentificationType;
+import entities.Institution;
+import entities.Competitor;
 import java.io.Serializable;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,13 +26,21 @@ import javax.faces.model.SelectItem;
 public class UserueController implements Serializable {
 
     private Userue current;
-    private List<IdentificationType> identificationTypes;
     private IdentificationType identificationType;
+    private Institution institution;
+    private Competitor competitor;
     private DataModel items = null;
+    private List<IdentificationType> identificationTypes;
+    private List<Institution> institutions;
+    private List<Competitor> competitors;
     @EJB
     private business.UserueService userueService;
     @EJB
     private business.IdentificationTypeService identificationTypeService;
+    @EJB
+    private business.InstitutionService institutionService;
+    @EJB
+    private business.CompetitorService competitorService;
     private PaginationHelper pagination;
     private int selectedItemIndex;
 
@@ -40,8 +50,12 @@ public class UserueController implements Serializable {
 
     public Userue getSelected() {
         identificationTypes = identificationTypeService.findAll();
+        institutions = institutionService.findAll();
+        competitors = competitorService.findAll();
         if (current == null) {
+            institution = new Institution();
             identificationType = new IdentificationType();
+            competitor = new Competitor();
             current = new Userue();
             selectedItemIndex = -1;
         }
@@ -90,7 +104,7 @@ public class UserueController implements Serializable {
 
     public String create() {
         try {
-            getUserueService().create(current);
+            getUserueService().create(current, institution, identificationType, competitor);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Bundle").getString("UserueCreated"));
             return prepareCreate();
         } catch (Exception e) {
@@ -204,6 +218,7 @@ public class UserueController implements Serializable {
     //IdentificationType
 
     public List<IdentificationType> getIdentificationTypes() {
+        identificationTypes=identificationTypeService.findAll();
         return identificationTypes;
     }
 
@@ -218,6 +233,45 @@ public class UserueController implements Serializable {
     public void setIdentificationType(IdentificationType identificationType) {
         this.identificationType = identificationType;
     }
+    
+    // Institution
+
+    public List<Institution> getInstitutions() {
+        institutions=institutionService.findAll();
+        return institutions;
+    }
+
+    public void setInstitutions(List<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public Institution getInstitution() {
+        return institution;
+    }
+
+    public void setInstitution(Institution institution) {
+        this.institution = institution;
+    }
+    
+    //Competitor
+
+    public List<Competitor> getCompetitors() {
+        competitors=competitorService.findAll();
+        return competitors;
+    }
+
+    public void setCompetitors(List<Competitor> competitors) {
+        this.competitors = competitors;
+    }
+
+    public Competitor getCompetitor() {
+        return competitor;
+    }
+
+    public void setCompetitor(Competitor competitor) {
+        this.competitor = competitor;
+    }
+    
     
     @FacesConverter(forClass = Userue.class)
     public static class UserueControllerConverter implements Converter {
